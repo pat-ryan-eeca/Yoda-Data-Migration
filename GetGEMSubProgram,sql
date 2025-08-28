@@ -1,0 +1,34 @@
+USE [GEM_UAT]
+GO
+/****** Object:  StoredProcedure [dbo].[GetGEMSubProgram]    Script Date: 28/08/2025 3:36:15 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+ALTER PROCEDURE [dbo].[GetGEMSubProgram]
+	--
+	@ProgramId INT,
+	@SubProgramId INT
+
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+      SELECT p.Program_ID, s.Subprogram_ID,  dbo.CleanString(p.Short_Name) as program_shortname, dbo.CleanString(p.Brief_Outline) as program_Brief_Outline,  dbo.CleanString(s.Name) as Subprogram_Name,  s.Budget_Code as Subprogram_Budget_Code, s.Start_Date as Subprogram_Start_Date, 
+				 s.End_Date as Subprogram_End_Date,  dbo.CleanString(s.Brief_Outline) as Subprogram_Brief_Outline
+		FROM Program p
+		join subprogram s on s.Program_ID = p.Program_ID
+	
+		where 
+			p.Program_ID = @ProgramId 
+			and s.Subprogram_ID =@SubProgramId 
+
+
+END
