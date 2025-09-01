@@ -6,6 +6,7 @@ DECLARE @ProgramId INT= 10;
 DECLARE @SubProgramId INT =42;
 DECLARE  @RootPath VARCHAR(255);
 DECLARE  @FilePath VARCHAR(255);
+DECLARE  @MaxFieldLength INT = 1024;
 
 
 SET @RootPath = 'c:\temp\GEMEXPORT2\'+ FORMAT(GETDATE(), 'yyyy-MM-dd_HH_mm') 
@@ -21,7 +22,6 @@ SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "'+ @header + @sql + ' -o ' + @R
 EXEC xp_cmdshell  @cmd
 
 --GetGEMSubProgramContracts
-
 SET @header =  'PRINT(''Contract_ID, Applicant, Contract_Title, Reference, Status, Start_Date, End_Date'');' 
 SET @sql = 'EXEC GetGEMSubProgramContracts ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) +'"';
 SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "'  + @header + @sql + ' -o ' + @RootPath + '\GEMSubProgramContracts.csv -s "," -h -1';
@@ -29,9 +29,9 @@ select @cmd
 EXEC xp_cmdshell  @cmd
 
 --GetGEMSubProgramContractVariations		 
-SET @header =  'PRINT(''project_id, Contract_ID, Workflow_Instance_ID, Title,  Type, IniatedOn, ContractorSignatoryName,status, RequestedOn, ExecutionDate,Request_Summary, RIARecomendation, RIASummary, RIAReviewer, InternalReviewComment,InternalReviewRecommendation, InteralReviewEnteredBy, File_ID,File_Name'');' 
+SET @header =  'PRINT(''project_id, Contract_ID, Applicant, Workflow_Instance_ID, Title,  Type, RequestedOn, ContractorSignatoryName,status, EnteredOnOn, ExecutionDate,Request_Summary, RIARecomendation, RIASummary, RIAReviewer, InternalReviewOutcome,RODecisonBy, InternalReviewComment,InternalReviewRecommendation, InteralReviewEnteredBy,ContractDescription, CompletionDate, CommencementDate, ContractorSignatoryPosition,ContractCap,AuthorityToSign,File_ID, File_Name, n'');' 
 SET @sql = 'EXEC GetGEMSubProgramContractVariations ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) +'"';
-SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "' + @header + @sql + ' -o ' + @RootPath + '\GEMSubProgramContractVariations.csv -s "," -h -1';
+SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "' + @header + @sql + ' -o ' + @RootPath + '\GEMSubProgramContractVariations.csv -s "," -h -1 -y ' +  CONVERT(VARCHAR(10), @MaxFieldLength);
 select @cmd
 EXEC xp_cmdshell  @cmd
 
