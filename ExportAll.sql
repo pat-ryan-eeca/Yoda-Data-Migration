@@ -18,7 +18,7 @@ EXEC xp_cmdshell @cmd;
 
 
 --GetGEMSubProgram
-SET @header = 'PRINT(''Program_ID, Subprogram_ID, Short_Name, Brief_Outline, Subprogram_Name,  Subprogram_Budget_Code, Subprogram_Start_Date, Subprogram_End_Date, Subprogram_Brief_Outline'');' 
+SET @header = 'PRINT(''Program_ID, Subprogram_ID, Short_Name, Brief_Outline, Subprogram_Name,  Subprogram_Budget_Code, Subprogram_Start_Date, Subprogram_End_Date, Subprogram_Brief_Outline, InitiativeAdmistratorId, InitiativeAdmistratorName'');' 
 SET @sql = 'EXEC GetGEMSubProgram ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) +'"';
 SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "'+ @header + @sql + ' -o ' + @RootPath + '\GEMSubProgram.csv -s "," -h -1 -y ' + CONVERT(VARCHAR(10), @MaxFieldLength);
 EXEC xp_cmdshell  @cmd
@@ -27,6 +27,21 @@ EXEC xp_cmdshell  @cmd
 SET @header =  'PRINT(''Contract_ID, Applicant, Contract_Title, Reference, Status, Start_Date, End_Date'');' 
 SET @sql = 'EXEC GetGEMSubProgramContracts ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) +'"';
 SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "'  + @header + @sql + ' -o ' + @RootPath + '\GEMSubProgramContracts.csv -s "," -h -1 -y ' + CONVERT(VARCHAR(10), @MaxFieldLength);
+select @cmd
+EXEC xp_cmdshell  @cmd
+
+--GetGEMProgramRoles
+SET @header =  'PRINT(''Role_Code, Stakeholder_Name, Stakeholder_ID'');' 
+SET @sql = 'EXEC GetGEMProgramRoles ' +  CONVERT(VARCHAR(10), @ProgramId) +'"';
+SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "'  + @header + @sql + ' -o ' + @RootPath + '\GetGEMProgramRoles.csv -s "," -h -1 -y ' + CONVERT(VARCHAR(10), @MaxFieldLength);
+select @cmd
+EXEC xp_cmdshell  @cmd
+
+
+--GetGEMSubProgramRoles
+SET @header =  'PRINT(''Role_Code, Stakeholder_Name, Stakeholder_ID'');' 
+SET @sql = 'EXEC GetGEMSubProgramRoles ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) +'"';
+SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "'  + @header + @sql + ' -o ' + @RootPath + '\GetGEMSubProgramRoles.csv -s "," -h -1 -y ' + CONVERT(VARCHAR(10), @MaxFieldLength);
 select @cmd
 EXEC xp_cmdshell  @cmd
 
