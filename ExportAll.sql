@@ -52,7 +52,7 @@ SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "'  + @header + @sql + ' -o ' + 
 select @cmd
 EXEC xp_cmdshell  @cmd
 
---[GetGEMSubProgramProjectRoles]
+--GetGEMSubProgramProjectRoles
 SET @header =  'PRINT(''Program_ID, Subprogram_ID, Project_ID, Role_Code, Stakeholder_Name, Stakeholder_ID'');' 
 SET @sql = 'EXEC GetGEMSubProgramProjectRoles ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) +'"';
 SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "'  + @header + @sql + ' -o ' + @RootPath + '\GetGEMSubProgramProjectRoles.csv -s "," -h -1 -y ' + CONVERT(VARCHAR(10), @MaxFieldLength);
@@ -92,7 +92,7 @@ EXEC xp_cmdshell  @cmd
 
 --GetGEMSubProgramMilestonesClaimsPayments
 
-SET @header =  'PRINT('' Project_id, Contract_ID, milestone_ID, reference, Milestone_Title,Milestone_description, Milestone_due_date, Milestone_submitted_as_complete_date, Milestone_type, Milestone_amount_type, claim_id, Claim_milestone_id, Claim_submitted_datetime, Claim_checked_status, Claim_approval_status, filename, file_id, document_title, Payment_Run_ID,payment_id, amount_ex,Payment_Date '') ;' 
+SET @header =  'PRINT(''Program_ID,Subprogram_ID,Contract_ID, milestone_ID, reference, Milestone_Title,Milestone_description, Milestone_due_date, Milestone_submitted_as_complete_date, Milestone_type, Milestone_amount_type, claim_id, Claim_milestone_id, Claim_submitted_datetime, Claim_checked_status, Claim_approval_status, filename, file_id, document_title, Payment_Run_ID,payment_id, amount_ex,Payment_Date '') ;' 
 SET @sql = 'EXEC GetGEMSubProgramMilestonesClaimsPayments ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) +'"';
 SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "' + @header + @sql + ' -o ' + @RootPath + '\GEMSubProgramMilestonesClaimsPayments.csv -s "," -h -1 -y ' + CONVERT(VARCHAR(10), @MaxFieldLength);
 select @cmd
