@@ -1,6 +1,6 @@
 USE [GEM_UAT]
 GO
-/****** Object:  StoredProcedure [dbo].[GetGEMSubProgramContracts]    Script Date: 22/09/2025 3:24:38 PM ******/
+/****** Object:  StoredProcedure [dbo].[GetGEMSubProgramContracts]    Script Date: 25/09/2025 1:10:57 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -13,7 +13,8 @@ GO
 ALTER PROCEDURE [dbo].[GetGEMSubProgramContracts]
 	-- Add the parameters for the stored procedure here
 	@ProgramId INT,
-	@SubProgramId INT
+	@SubProgramId INT,
+	@External_Reference VARCHAR(200)=''
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
@@ -34,5 +35,6 @@ BEGIN
 		and p.Program_ID = @ProgramId 
 		and p.Project_Actual_Finish_Date >  cast(sysdatetime() as date)
 		and pd.field_code='PROJ_EECA_CONTACT'
+		and p.External_Reference like '%'+@External_Reference +'%'
  
 END

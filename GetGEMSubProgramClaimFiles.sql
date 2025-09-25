@@ -1,6 +1,6 @@
 USE [GEM_UAT]
 GO
-/****** Object:  StoredProcedure [dbo].[GetGEMSubProgramClaimFiles]    Script Date: 8/09/2025 5:11:14 PM ******/
+/****** Object:  StoredProcedure [dbo].[GetGEMSubProgramClaimFiles]    Script Date: 25/09/2025 1:19:35 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -12,7 +12,9 @@ GO
 -- =============================================
 ALTER PROCEDURE [dbo].[GetGEMSubProgramClaimFiles]
 	@ProgramId INT,
-	@SubProgramId INT
+	@SubProgramId INT,
+	@External_Reference VARCHAR(200)=''
+
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
@@ -43,5 +45,6 @@ BEGIN
 						INNER JOIN PRJ_MilestoneClaims mc on mc.milestone_id = m.milestone_id
 						where p.Subprogram_ID =@SubProgramId 	
 							and p.Program_ID = @ProgramId 
+							and  p.External_Reference like '%'+@External_Reference +'%'
 						)
 END

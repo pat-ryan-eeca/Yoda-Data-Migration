@@ -1,6 +1,6 @@
 USE [GEM_UAT]
 GO
-/****** Object:  StoredProcedure [dbo].[GetGEMStakeholderAcccounts]    Script Date: 28/08/2025 3:35:35 PM ******/
+/****** Object:  StoredProcedure [dbo].[GetGEMStakeholderAcccounts]    Script Date: 25/09/2025 1:20:21 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -12,7 +12,8 @@ GO
 -- =============================================
 ALTER PROCEDURE [dbo].[GetGEMStakeholderAcccounts]
 	@ProgramId INT,
-	@SubProgramId INT
+	@SubProgramId INT,
+	@External_Reference VARCHAR(200)=''
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
@@ -31,6 +32,7 @@ join StakeholderAccount sa on sa.Stakeholder_ID = s.stakeholder_id
 join BankAccountDetail ba on ba.Bank_Account_Detail_ID = sa.Bank_Account_Detail_ID
 where p.Subprogram_ID =@SubProgramId 
 and p.Program_ID = @ProgramId 
+and  p.External_Reference like '%'+@External_Reference +'%'
 and p.Project_Actual_Finish_Date >  cast(sysdatetime() as date)
 
  

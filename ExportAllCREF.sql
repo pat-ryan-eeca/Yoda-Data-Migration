@@ -4,19 +4,19 @@
 DECLARE @sql NVARCHAR(MAX);
 DECLARE @header NVARCHAR(MAX);
 DECLARE @cmd VARCHAR(4000);
-DECLARE @ProgramId INT= 10;
-DECLARE @SubProgramId INT =42;
+DECLARE @ProgramId INT= 9;
+DECLARE @SubProgramId INT =34;
+DECLARE @External_Ref VARCHAR(200)='CREF';
 DECLARE  @RootPath VARCHAR(255);
 DECLARE  @FilePath VARCHAR(255);
 DECLARE  @MaxFieldLength INT = 1024;
 
-
-SET @RootPath = 'c:\temp\GEMEXPORT2\'+ FORMAT(GETDATE(), 'yyyy-MM-dd_HH_mm') 
+SET @RootPath = 'c:\temp\GEMEXPORT2\'+ FORMAT(GETDATE(), 'yyyy-MM-dd_HH_mm')+'\LEHVF' 
 SET @cmd= 'mkdir "' + @RootPath + '"';
 PRINT 'Creating output folder ' + @RootPath; 
 EXEC xp_cmdshell @cmd;
 
-
+--LEHV
 --GetGEMSubProgram
 SET @header = 'PRINT(''Program_ID, Subprogram_ID, Short_Name, Brief_Outline, Subprogram_Name,  Subprogram_Budget_Code, Subprogram_Start_Date, Subprogram_End_Date, Subprogram_Brief_Outline, InitiativeAdmistratorId, InitiativeAdmistratorName'');' 
 SET @sql = 'EXEC GetGEMSubProgram ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) +'"';
@@ -25,7 +25,7 @@ EXEC xp_cmdshell  @cmd
 
 --GetGEMSubProgramContracts
 SET @header =  'PRINT(''Contract_ID, Applicant, Contract_Title, Reference, Status, Start_Date, End_Date, EECA_Contact'');' 
-SET @sql = 'EXEC GetGEMSubProgramContracts ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) +'"';
+SET @sql = 'EXEC GetGEMSubProgramContracts ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) + '"';
 SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "'  + @header + @sql + ' -o ' + @RootPath + '\GEMSubProgramContracts.csv -s "," -h -1 -y ' + CONVERT(VARCHAR(10), @MaxFieldLength);
 select @cmd
 EXEC xp_cmdshell  @cmd
@@ -115,13 +115,15 @@ select @cmd
 EXEC xp_cmdshell  @cmd
 
 --Claim Files
-SET @FilePath = @RootPath + '\LEHV\ClaimFiles\';
+SET @FilePath = @RootPath + '\CREF_ClaimFiles\';
 EXEC  ExportClaimFiles @ProgramID, @SubProgramId, @FilePath
 
 --contract Files
-SET @FilePath = @RootPath + '\LEHV\ContractFiles\';
+SET @FilePath = @RootPath + '\CREF_ContractFiles\';
 EXEC  ExportContractFiles @ProgramID, @SubProgramId, @FilePath
 
 -- contract supporting docs
-SET @FilePath = @RootPath + '\LEHV\ContractSupportingDocs\';
+SET @FilePath = @RootPath + '\CREF_ContractSupportingDocs\';
 EXEC  ExportContractSupportingDocs @ProgramID, @SubProgramId, @FilePath
+
+

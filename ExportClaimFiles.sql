@@ -1,6 +1,6 @@
 USE [GEM_UAT]
 GO
-/****** Object:  StoredProcedure [dbo].[ExportClaimFiles]    Script Date: 28/08/2025 3:40:59 PM ******/
+/****** Object:  StoredProcedure [dbo].[ExportClaimFiles]    Script Date: 25/09/2025 1:22:22 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -13,7 +13,8 @@ GO
 ALTER PROCEDURE [dbo].[ExportClaimFiles]
 	@ProgramId INT,
 	@SubProgramId INT,
-	@Rootdir  NVARCHAR (2000)
+	@Rootdir  NVARCHAR (2000),
+	@External_Reference VARCHAR(200)=''
 AS
 DECLARE @ImageData VARBINARY (max);
 DECLARE @Path2OutFile NVARCHAR (2000);
@@ -34,6 +35,7 @@ DECLARE cursor_contract  CURSOR FOR
 
 	where p.Subprogram_ID =@SubProgramId 
 	and p.Program_ID = @ProgramId 
+	and  p.External_Reference like '%'+@External_Reference +'%'
 	
 
 OPEN cursor_contract;

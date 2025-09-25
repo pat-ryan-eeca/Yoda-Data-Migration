@@ -1,6 +1,6 @@
 USE [GEM_UAT]
 GO
-/****** Object:  StoredProcedure [dbo].[GetGEMSubProgramContractVariations]    Script Date: 8/09/2025 5:08:31 PM ******/
+/****** Object:  StoredProcedure [dbo].[GetGEMSubProgramContractVariations]    Script Date: 25/09/2025 1:13:43 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -12,7 +12,8 @@ GO
 -- =============================================
 ALTER PROCEDURE [dbo].[GetGEMSubProgramContractVariations]
 @ProgramId INT,
-@SubProgramId INT
+@SubProgramId INT,
+@External_Reference VARCHAR(200)=''
 
 AS
 BEGIN
@@ -176,6 +177,7 @@ select  LTRIM(RTRIM (p.project_id)) as project_id,
 	  
 	  where  p.Program_ID = @ProgramId
 			and p.Subprogram_ID =@SubProgramId
+			and p.External_Reference like '%'+@External_Reference +'%'
 
 	  
 

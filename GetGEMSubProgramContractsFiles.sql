@@ -1,6 +1,6 @@
 USE [GEM_UAT]
 GO
-/****** Object:  StoredProcedure [dbo].[GetGEMSubProgramContractsFiles]    Script Date: 8/09/2025 5:10:29 PM ******/
+/****** Object:  StoredProcedure [dbo].[GetGEMSubProgramContractsFiles]    Script Date: 25/09/2025 1:10:20 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -12,7 +12,8 @@ GO
 -- =============================================
 ALTER PROCEDURE [dbo].[GetGEMSubProgramContractsFiles] 
 	@ProgramId INT,
-	@SubProgramId INT
+	@SubProgramId INT,
+	@External_Reference VARCHAR(200)=''
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
@@ -31,6 +32,7 @@ BEGIN
 		on d.file_id = f.file_id
         where  p.Program_ID = @ProgramId
 			and p.Subprogram_ID = @SubProgramId
+			and p.External_Reference like '%'+@External_Reference +'%'
 			
 
 END

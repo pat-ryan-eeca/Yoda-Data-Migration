@@ -1,6 +1,6 @@
 USE [GEM_UAT]
 GO
-/****** Object:  StoredProcedure [dbo].[GetGEMSubProgramContractVariationsSupportingDocs]    Script Date: 22/09/2025 3:22:16 PM ******/
+/****** Object:  StoredProcedure [dbo].[GetGEMSubProgramContractVariationsSupportingDocs]    Script Date: 25/09/2025 1:14:34 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -12,7 +12,8 @@ GO
 -- =============================================
 ALTER PROCEDURE [dbo].[GetGEMSubProgramContractVariationsSupportingDocs]
 @ProgramId INT,
-@SubProgramId INT
+@SubProgramId INT,
+@External_Reference VARCHAR(200)=''
 
 AS
 BEGIN
@@ -62,6 +63,7 @@ DECLARE @grant_step_field_id INT =4235
 							project p 
 						where p.Subprogram_ID = @SubProgramId	
 							and p.Program_ID = @ProgramId 
+							and p.External_Reference like '%'+@External_Reference +'%'
 						)					 
                   
                        

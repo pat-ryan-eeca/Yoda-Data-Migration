@@ -1,6 +1,6 @@
 USE [GEM_UAT]
 GO
-/****** Object:  StoredProcedure [dbo].[GetGEMSubProgramMilestonesClaimsPayments]    Script Date: 28/08/2025 3:39:05 PM ******/
+/****** Object:  StoredProcedure [dbo].[GetGEMSubProgramMilestonesClaimsPayments]    Script Date: 25/09/2025 1:18:48 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -13,7 +13,9 @@ GO
 ALTER PROCEDURE [dbo].[GetGEMSubProgramMilestonesClaimsPayments]
 	-- Add the parameters for the stored procedure here
 	@ProgramId INT,
-	@SubProgramId INT
+	@SubProgramId INT,
+	@External_Reference VARCHAR(200)=''
+
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
@@ -39,5 +41,6 @@ full outer join COMM_Files f on f.file_id = d.file_id /* outlook msg file with c
 where 
 			p.Subprogram_ID = @SubProgramId
 			and p.Program_ID = @ProgramId
+			and  p.External_Reference like '%'+@External_Reference +'%'
 
 END
