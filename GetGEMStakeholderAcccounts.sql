@@ -1,6 +1,6 @@
 USE [GEM_UAT]
 GO
-/****** Object:  StoredProcedure [dbo].[GetGEMStakeholderAcccounts]    Script Date: 25/09/2025 1:20:21 PM ******/
+/****** Object:  StoredProcedure [dbo].[GetGEMStakeholderAcccounts]    Script Date: 29/09/2025 2:37:48 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -33,7 +33,7 @@ join BankAccountDetail ba on ba.Bank_Account_Detail_ID = sa.Bank_Account_Detail_
 where p.Subprogram_ID =@SubProgramId 
 and p.Program_ID = @ProgramId 
 and  p.External_Reference like '%'+@External_Reference +'%'
-and p.Project_Actual_Finish_Date >  cast(sysdatetime() as date)
+--and p.Project_Actual_Finish_Date >  cast(sysdatetime() as date)
 
  
 END

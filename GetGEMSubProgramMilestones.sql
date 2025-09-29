@@ -1,6 +1,6 @@
 USE [GEM_UAT]
 GO
-/****** Object:  StoredProcedure [dbo].[GetGEMSubProgramMilestones]    Script Date: 25/09/2025 1:16:09 PM ******/
+/****** Object:  StoredProcedure [dbo].[GetGEMSubProgramMilestones]    Script Date: 29/09/2025 2:38:29 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -29,7 +29,7 @@ BEGIN
 		where 
 			p.Subprogram_ID = 42
 			and p.Program_ID = 10
-			and p.Project_Actual_Finish_Date >  cast(sysdatetime() as date)
+			--and p.Project_Actual_Finish_Date >  cast(sysdatetime() as date)
 			and p.External_Reference like '%'+@External_Reference +'%'
 
 END

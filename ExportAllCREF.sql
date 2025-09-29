@@ -11,7 +11,7 @@ DECLARE  @RootPath VARCHAR(255);
 DECLARE  @FilePath VARCHAR(255);
 DECLARE  @MaxFieldLength INT = 1024;
 
-SET @RootPath = 'c:\temp\GEMEXPORT2\'+ FORMAT(GETDATE(), 'yyyy-MM-dd_HH_mm')+'\LEHVF' 
+SET @RootPath = 'c:\temp\GEMEXPORT2\'+ FORMAT(GETDATE(), 'yyyy-MM-dd_HH_mm')+'\CREF' 
 SET @cmd= 'mkdir "' + @RootPath + '"';
 PRINT 'Creating output folder ' + @RootPath; 
 EXEC xp_cmdshell @cmd;
