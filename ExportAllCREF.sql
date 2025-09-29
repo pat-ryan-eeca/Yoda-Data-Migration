@@ -90,7 +90,7 @@ EXEC xp_cmdshell  @cmd
 
 -- GetGEMSubProgramMilestones
 SET @header =  'PRINT('' Program_ID,Subprogram_ID,Contract_ID, Milestone_ID, Type,Title, Due_Date, Reference,Submitted_As_Complete_Datetime, Description, Amount_type, Amount'');' 
-SET @sql = 'EXEC GetGEMSubProgramMilestones ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) +'"';
+SET @sql = 'EXEC GetGEMSubProgramMilestones ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) +','+ @External_Ref+'"';
 SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "' + @header + @sql + ' -o ' + @RootPath + '\GEMSubProgramMilestones.csv -s "," -h -1 -y ' + CONVERT(VARCHAR(10), @MaxFieldLength);
 select @cmd
 EXEC xp_cmdshell  @cmd
