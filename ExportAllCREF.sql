@@ -95,8 +95,7 @@ SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "' + @header + @sql + ' -o ' + @
 select @cmd
 EXEC xp_cmdshell  @cmd
 
---GetGEMSubProgramContractVariationsMilestones
-						
+--GetGEMSubProgramContractVariationsMilestones						
 SET @header =  'PRINT(''Project_id,Contract_ID, milestone_ID, milestone_ref, Milestone_Title,MilestoneFinancial, MilestoneRecurrence, MilestoneType,  MilestoneStatus, MilestoneAmount, MilestoneDueDate '') ;' 
 SET @sql = 'EXEC GetGEMSubProgramContractVariationsMilestones ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) +','+ @External_Ref +'"';
 SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "' + @header + @sql + ' -o ' + @RootPath + '\GetGEMSubProgramContractVariationsMilestones.csv -s "," -h -1 -y ' + CONVERT(VARCHAR(10), @MaxFieldLength);
@@ -105,15 +104,13 @@ EXEC xp_cmdshell  @cmd
 
 
 --GetGEMSubProgramMilestonesClaimsPayments
-
 SET @header =  'PRINT(''Program_ID,Subprogram_ID,Contract_ID, milestone_ID, reference, Milestone_Title,Milestone_description, Milestone_due_date, Milestone_submitted_as_complete_date, Milestone_type, Milestone_amount_type, claim_id, Claim_milestone_id, Claim_submitted_datetime, Claim_checked_status, Claim_approval_status, filename, file_id, document_title, Payment_Run_ID,payment_id, amount_ex,Payment_Date '') ;' 
-SET @sql = 'EXEC GetGEMSubProgramMilestonesClaimsPayments ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) +'"';
+SET @sql = 'EXEC GetGEMSubProgramMilestonesClaimsPayments ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId)  +','+ @External_Ref +'"';
 SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "' + @header + @sql + ' -o ' + @RootPath + '\GEMSubProgramMilestonesClaimsPayments.csv -s "," -h -1 -y ' + CONVERT(VARCHAR(10), @MaxFieldLength);
 select @cmd
 EXEC xp_cmdshell  @cmd
 
 -- GetGEMSubProgramClaimFiles
-
 SET @header =  'PRINT(''title, filenamer,filesize '') ;' 
 SET @sql = 'EXEC GetGEMSubProgramClaimFiles ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) +'"';
 SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "' + @header + @sql + ' -o ' + @RootPath + '\GetGEMSubProgramClaimFiles.csv -s "," -h -1 -y ' + CONVERT(VARCHAR(10), @MaxFieldLength);
