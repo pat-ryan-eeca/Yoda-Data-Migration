@@ -1,6 +1,6 @@
 USE [GEM_UAT]
 GO
-/****** Object:  StoredProcedure [dbo].[GetGEMSubProgramContracts]    Script Date: 29/09/2025 2:18:56 PM ******/
+/****** Object:  StoredProcedure [dbo].[GetGEMSubProgramContracts]    Script Date: 29/09/2025 2:48:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -34,6 +34,7 @@ BEGIN
 		where p.Subprogram_ID =@SubProgramId 
 		and p.Program_ID = @ProgramId 
 		--and p.Project_Actual_Finish_Date >  cast(sysdatetime() as date)
+		and  p.Project_Actual_Start_Date is not null
 		and pd.field_code='PROJ_EECA_CONTACT'
 		and p.External_Reference like '%'+@External_Reference +'%'
  
