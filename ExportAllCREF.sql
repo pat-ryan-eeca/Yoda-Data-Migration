@@ -82,7 +82,7 @@ EXEC xp_cmdshell  @cmd
 
 --GetGEMSubProgramContractVariationsSupportingDocs
 SET @header =  'PRINT(''Program_ID,Subprogram_ID, Project_ID, contract_variationid, File_Name,FileSize, Retrieval_Guid'');' 
-SET @sql = 'EXEC GetGEMSubProgramContractVariationsSupportingDocs ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) +'"';
+SET @sql = 'EXEC GetGEMSubProgramContractVariationsSupportingDocs ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) +','+ @External_Ref +'"';
 SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "' + @header + @sql + ' -o ' + @RootPath + '\GetGEMSubProgramContractVariationsSupportingDocs.csv -s "," -h -1 -y ' + CONVERT(VARCHAR(10), @MaxFieldLength);
 select @cmd
 EXEC xp_cmdshell  @cmd
