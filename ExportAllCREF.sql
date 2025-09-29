@@ -61,7 +61,7 @@ EXEC xp_cmdshell  @cmd
 
 --GetGEMSubProgramFiles
 SET @header =  'PRINT(''Program_ID, Subprogram_ID, Project_ID, Contract_ID, filename, document_title'');' 
-SET @sql = 'EXEC GetGEMSubProgramContractsFiles ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) +'"';
+SET @sql = 'EXEC GetGEMSubProgramContractsFiles ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) +',' + @External_Ref +'"';
 SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "'  + @header + @sql + ' -o ' + @RootPath + '\GetGEMSubProgramContractsFiles.csv -s "," -h -1 -y ' + CONVERT(VARCHAR(10), @MaxFieldLength);
 select @cmd
 EXEC xp_cmdshell  @cmd
