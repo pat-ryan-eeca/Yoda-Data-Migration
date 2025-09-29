@@ -24,7 +24,7 @@ SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "'+ @header + @sql + ' -o ' + @R
 EXEC xp_cmdshell  @cmd
 
 --GetGEMSubProgramContracts
-SET @header =  'PRINT(''Contract_ID, Applicant, Contract_Title, Reference, Status, Start_Date, End_Date, EECA_Contact'');' 
+SET @header =  'PRINT(''Program_ID,Subprogram_ID,Contract_ID, Applicant, Contract_Title, Reference, Status, Start_Date, End_Date, EECA_Contact'');' 
 SET @sql = 'EXEC GetGEMSubProgramContracts ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) + ',' +   CONVERT(VARCHAR(10), @External_Ref) +'"';
 SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "'  + @header + @sql + ' -o ' + @RootPath + '\GEMSubProgramContracts.csv -s "," -h -1 -y ' + CONVERT(VARCHAR(10), @MaxFieldLength);
 select @cmd
