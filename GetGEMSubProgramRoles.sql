@@ -1,6 +1,6 @@
 USE [GEM_UAT]
 GO
-/****** Object:  StoredProcedure [dbo].[GetGEMSubProgramRoles]    Script Date: 10/09/2025 3:15:43 PM ******/
+/****** Object:  StoredProcedure [dbo].[GetGEMSubProgramRoles]    Script Date: 29/09/2025 3:11:09 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -20,7 +20,7 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
-   SELECT sr.role_code, st.name,st.Stakeholder_ID
+   SELECT @ProgramId, @SubProgramId, sr.role_code, st.name,st.Stakeholder_ID
 				
 				
 		FROM Program p

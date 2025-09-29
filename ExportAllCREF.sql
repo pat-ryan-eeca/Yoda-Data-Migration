@@ -18,7 +18,7 @@ EXEC xp_cmdshell @cmd;
 
 --LEHV
 --GetGEMSubProgram
-SET @header = 'PRINT(''Program_ID, Subprogram_ID, Short_Name, Brief_Outline, Subprogram_Name,  Subprogram_Budget_Code, Subprogram_Start_Date, Subprogram_End_Date, Subprogram_Brief_Outline, InitiativeAdmistratorId, InitiativeAdmistratorName'');' 
+SET @header = 'PRINT(''Program_ID, Subprogram_ID, Program_Short_Name, Brief_Outline, Subprogram_Name,  Subprogram_Budget_Code, Subprogram_Start_Date, Subprogram_End_Date, Subprogram_Brief_Outline, Workflow_Code, InitiativeAdmistratorId, InitiativeAdmistratorName'');' 
 SET @sql = 'EXEC GetGEMSubProgram ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) +'"';
 SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "'+ @header + @sql + ' -o ' + @RootPath + '\GEMSubProgram.csv -s "," -h -1 -y ' + CONVERT(VARCHAR(10), @MaxFieldLength);
 EXEC xp_cmdshell  @cmd
@@ -31,15 +31,29 @@ select @cmd
 EXEC xp_cmdshell  @cmd
 
 --GetGEMProgramRoles
-SET @header =  'PRINT(''Role_Code, Stakeholder_Name, Stakeholder_ID'');' 
+SET @header =  'PRINT(''Program_ID, Role_Code, Stakeholder_Name, Stakeholder_ID'');' 
 SET @sql = 'EXEC GetGEMProgramRoles ' +  CONVERT(VARCHAR(10), @ProgramId) +'"';
 SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "'  + @header + @sql + ' -o ' + @RootPath + '\GetGEMProgramRoles.csv -s "," -h -1 -y ' + CONVERT(VARCHAR(10), @MaxFieldLength);
 select @cmd
 EXEC xp_cmdshell  @cmd
 
+-- GetGEMSubProgramRounds             
+SET @header = 'PRINT(''Program_ID, Subprogram_ID, Round, name,Start_Date,End_Date,Budget_Amount,Brief_Outline, grant_manager_stakeholder_id,direct_selection  '');'
+SET @sql = 'EXEC GetGEMSubProgramRounds ' +  CONVERT(VARCHAR(10), @ProgramId) +',' + CONVERT(VARCHAR(10), @SubProgramId) +'"';
+SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "'  + @header + @sql + ' -o ' + @RootPath + '\GetGEMSubProgramRounds.csv -s "," -h -1 -y ' + CONVERT(VARCHAR(10), @MaxFieldLength);
+select @cmd
+EXEC xp_cmdshell  @cmd
+
+-- GetGEMSubProgramRoundRoles
+SET @header = 'PRINT(''Program_ID, Subprogram_ID, RoundId, role_code, name'');' 
+SET @sql = 'EXEC GetGEMSubProgramRoundRoles ' +  CONVERT(VARCHAR(10), @ProgramId)  +',' + CONVERT(VARCHAR(10), @SubProgramId) +'"';
+SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "'  + @header + @sql + ' -o ' + @RootPath + '\GetGEMSubProgramRoundRoles.csv -s "," -h -1 -y ' + CONVERT(VARCHAR(10), @MaxFieldLength);
+select @cmd
+EXEC xp_cmdshell  @cmd
+
 
 --GetGEMSubProgramRoles
-SET @header =  'PRINT(''Role_Code, Stakeholder_Name, Stakeholder_ID'');' 
+SET @header =  'PRINT(''Program_ID, Subprogram_ID, Role_Code, Stakeholder_Name, Stakeholder_ID'');' 
 SET @sql = 'EXEC GetGEMSubProgramRoles ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) +'"';
 SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "'  + @header + @sql + ' -o ' + @RootPath + '\GetGEMSubProgramRoles.csv -s "," -h -1 -y ' + CONVERT(VARCHAR(10), @MaxFieldLength);
 select @cmd
