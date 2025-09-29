@@ -127,14 +127,14 @@ EXEC xp_cmdshell  @cmd
 
 --Claim Files
 SET @FilePath = @RootPath + '\CREF_ClaimFiles\';
-EXEC  ExportClaimFiles @ProgramID, @SubProgramId, @FilePath
+EXEC  ExportClaimFiles @ProgramID, @SubProgramId, @FilePath, @External_Ref
 
 --contract Files
 SET @FilePath = @RootPath + '\CREF_ContractFiles\';
-EXEC  ExportContractFiles @ProgramID, @SubProgramId, @FilePath
+EXEC  ExportContractFiles @ProgramID, @SubProgramId, @FilePath, @External_Ref
 
 -- contract supporting docs
 SET @FilePath = @RootPath + '\CREF_ContractSupportingDocs\';
-EXEC  ExportContractSupportingDocs @ProgramID, @SubProgramId, @FilePath
+EXEC  ExportContractSupportingDocs @ProgramID, @SubProgramId, @FilePath,  @External_Ref
 
 
