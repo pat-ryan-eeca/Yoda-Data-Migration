@@ -1,6 +1,6 @@
 USE [GEM_UAT]
 GO
-/****** Object:  StoredProcedure [dbo].[GetGEMSubProgramRounds]    Script Date: 29/09/2025 12:32:28 PM ******/
+/****** Object:  StoredProcedure [dbo].[GetGEMSubProgramRounds]    Script Date: 29/09/2025 3:01:07 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -19,30 +19,16 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;       
             SELECT
-                  t.Time_Period_ID
-                  , t.Name
-                  , t.Description
-                  , t.Start_Date
-                  , t.Submission_Open_Date
-                  , t.End_Date
-                  , t.Host_Institution_Warning_Date
-                  , t.Budget_Amount
-                  , t.Shortlist_Multiplier_1
-                  , t.Shortlist_Multiplier_2
-                  , t.Budget_Variation_Allowance
-                  , t.Budget_Cap_Per_Application
-                  , t.maximum_contract_value
-                  , t.Uro_ID
-                  , t.Brief_Outline
-                  , t.Draft
-                  , t.Recalled
-                  , t.Approach
-                  , t.Invitees_Only
-                  , t.Prepanel_Required
-                  , t.grant_manager_stakeholder_id
-                  , t.funding_period_start_date
-                  , t.funding_period_end_date
-				  , tpx.direct_selection       
+                  @ProgramId
+				, @SubProgramId 
+				, t.Time_Period_ID as RoundId
+				, dbo.CleanString(t.Name)
+				, t.Start_Date         
+				, t.End_Date                  
+				, t.Budget_Amount                 
+				, dbo.CleanString(t.Brief_Outline)
+				, t.grant_manager_stakeholder_id              
+				, tpx.direct_selection                  
                   
                FROM
                   TimePeriod t
