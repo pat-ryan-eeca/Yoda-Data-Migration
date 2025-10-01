@@ -24,7 +24,7 @@ SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "'+ @header + @sql + ' -o ' + @R
 EXEC xp_cmdshell  @cmd
 
 --GetGEMSubProgramContracts
-SET @header =  'PRINT(''Program_ID, Subprogram_ID,, Contract_ID, Applicant, Contract_Title, Reference, Status, Start_Date, End_Date, EECA_Contact'');' 
+SET @header =  'PRINT(''Program_ID, Subprogram_ID,, Contract_ID, Applicant, Contract_Title, Reference, Status, Start_Date, End_Date, EECA_Contact, Round'');' 
 SET @sql = 'EXEC GetGEMSubProgramContracts ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) +',' + @External_Ref + '"';
 SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "'  + @header + @sql + ' -o ' + @RootPath + '\GEMSubProgramContracts.csv -s "," -h -1 -y ' + CONVERT(VARCHAR(10), @MaxFieldLength);
 select @cmd
@@ -120,21 +120,21 @@ EXEC xp_cmdshell  @cmd
 --GetGEMStakeholderAcccounts
 
 SET @header =  'PRINT(''Program_ID,Subprogram_ID,Contract_ID, Project_ID, Stakeholder_ID, name, alt_name, phone_work, universal_resource_id, email_work, staff, gst_rate_code, gst_number, contact_name, crm_reference, entity_reg, registered_gst,Account_Name,Account_Number, account_suffix, bank_number,  branch_number '') ;' 
-SET @sql = 'EXEC GetGEMStakeholderAcccounts ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) +','+ @External_Ref +'"';
+SET @sql = 'EXEC GetGEMStakeholderAcccounts ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) +'"';
 SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "' + @header + @sql + ' -o ' + @RootPath + '\GEMStakeholderAcccounts.csv -s "," -h -1 -y ' + CONVERT(VARCHAR(10), @MaxFieldLength);
 select @cmd
 EXEC xp_cmdshell  @cmd
 
 --Claim Files
 SET @FilePath = @RootPath + '\CREF_ClaimFiles\';
-EXEC  ExportClaimFiles @ProgramID, @SubProgramId, @FilePath, @External_Ref
+EXEC  ExportClaimFiles @ProgramID, @SubProgramId, @FilePath
 
 --contract Files
 SET @FilePath = @RootPath + '\CREF_ContractFiles\';
-EXEC  ExportContractFiles @ProgramID, @SubProgramId, @FilePath, @External_Ref
+EXEC  ExportContractFiles @ProgramID, @SubProgramId, @FilePath
 
 -- contract supporting docs
 SET @FilePath = @RootPath + '\CREF_ContractSupportingDocs\';
-EXEC  ExportContractSupportingDocs @ProgramID, @SubProgramId, @FilePath,  @External_Ref
+EXEC  ExportContractSupportingDocs @ProgramID, @SubProgramId, @FilePath
 
 

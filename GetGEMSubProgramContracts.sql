@@ -1,6 +1,6 @@
 USE [GEM_UAT]
 GO
-/****** Object:  StoredProcedure [dbo].[GetGEMSubProgramContracts]    Script Date: 29/09/2025 3:23:20 PM ******/
+/****** Object:  StoredProcedure [dbo].[GetGEMSubProgramContracts]    Script Date: 1/10/2025 11:42:09 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -21,14 +21,15 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
-    -- Insert statements for procedure here
-	select @ProgramId,@SubProgramId,  p.Project_ID as Contract_ID, c.Stakeholder_id as applicant,  p.Project_Title as Contract_Title, p.External_Reference, 
-		p.Project_Status_ID, p.Project_Actual_Start_Date, p.Project_Actual_Finish_Date,pd.value as EECA_CONTACT
+  
+select @ProgramId,@SubProgramId,  p.Project_ID as Contract_ID, c.Stakeholder_id as applicant,  p.Project_Title as Contract_Title, p.External_Reference, 
+		p.Project_Status_ID, p.Project_Actual_Start_Date, p.Project_Actual_Finish_Date,pd.value as EECA_CONTACT, t.Name as Round
 		from Contract c join Project p  on c.Project_ID=p.Project_ID
-		join STKH_Stakeholders s on c.Stakeholder_ID = s.stakeholder_id
-		join STKH_Legal l on l.stakeholder_id=s.stakeholder_id
-		join SEC_StakeholderRoles sr on s.stakeholder_id = sr.stakeholder_id and sr.universal_resource_id=p.Uro_ID
-		join PRJ_ProjectData pd on pd.universal_resource_id=p.Uro_ID
+		inner join STKH_Stakeholders s on c.Stakeholder_ID = s.stakeholder_id
+		inner join STKH_Legal l on l.stakeholder_id=s.stakeholder_id
+		inner join SEC_StakeholderRoles sr on s.stakeholder_id = sr.stakeholder_id and sr.universal_resource_id=p.Uro_ID
+		inner join PRJ_ProjectData pd on pd.universal_resource_id=p.Uro_ID
+		inner join TimePeriod t on t.Time_Period_ID = p.Time_Period_ID
 
 
 		where p.Subprogram_ID =@SubProgramId 
