@@ -1,6 +1,6 @@
 
     $csvData = Import-Csv -Path ".\GEMStakeholderAcccounts_lehvf.csv"
-	$csvData2 = Import-Csv -Path ".\GEMStakeholderAcccounts_cref.csv"
+    $csvData2 = Import-Csv -Path ".\GEMStakeholderAcccounts_cref.csv"
 
     foreach ($row in $csvData) {
         # Access column values using dot notation
