@@ -10,5 +10,7 @@
 		 $foundRow = $csvData2 | Where-Object { $_.Stakeholder_ID -eq $($row.Stakeholder_ID) }
 		 if ($null -ne $foundRow) {
 			Write-Host "found duplciate $($foundRow.Stakeholder_ID)" 
+			# if we have a duplciate see which is more recent
+			
 		 }
     }
