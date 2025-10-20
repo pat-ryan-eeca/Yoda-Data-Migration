@@ -1,16 +1,23 @@
+  $PreviousRunsPath = ".\PreviousRuns\GEMStakeholderAcccounts.csv"
+	$csvDataOld = Import-Csv -Path  $PreviousRunsPath 
+    $csvDataNew = Import-Csv -Path ".\GEMStakeholderAcccounts.csv"
 
-    $csvData = Import-Csv -Path ".\GEMStakeholderAcccounts_lehvf.csv"
-    $csvData2 = Import-Csv -Path ".\GEMStakeholderAcccounts_cref.csv"
-
-    foreach ($row in $csvData) {
+    foreach ($newRow in $csvDataNew) {
         # Access column values using dot notation
         Write-Host "Stakeholder_ID: $($row.Stakeholder_ID)"
         
         # Perform other operations with $row.ColumnName
-		 $foundRow = $csvData2 | Where-Object { $_.Stakeholder_ID -eq $($row.Stakeholder_ID) }
+		 $foundRow = $csvDataOld | Where-Object { $_.Stakeholder_ID -eq $($newRow.Stakeholder_ID) }
 		 if ($null -ne $foundRow) {
-			Write-Host "found duplciate $($foundRow.Stakeholder_ID)" 
-			# if we have a duplciate see which is more recent
+			Write-Host "found duplicate $($foundRow.Stakeholder_ID) previous update :  $($foundRow.last_updated_on)" ;
+		  	$oldDate = [datetime]::parseexact($foundRow.last_updated_on , 'yyyy-MM-dd HH:mm:ss.fff',$null);
+		    $newDate = [datetime]::parseexact($newRow.last_updated_on, 'yyyy-MM-dd HH:mm:ss.fff',$null);
+		  
+			if  ( $newDate -gt $oldDate ) {
+				 Write-Host "new data is more recent";
+			}
+		
+			
 			
 		 }
     }
