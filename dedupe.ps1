@@ -1,24 +1,40 @@
-<# cgecks for duplciates in GEMStakeholderAcccounts vby comariant with the GEMStakeholderAcccounts in PreviousRunsPath
-If a duplicate is found we check if hte wne dfiel dlast_updated date is more recent, in which case we keep it 
-Otherwsie we remove tehg duplcite from the new fiel
-The updated fiel is saved to OutPath
+<# checks for duplciates in GEMStakeholderAcccounts by comparing with the GEMStakeholderAcccounts in PreviousRunsPath
+If a duplicate is found we check if the new data is more recent, in which case we keep it 
+Otherwise we remove the duplicate from the new file
+The updated file is saved to OutPath
 #>
 
+#constants
+$PreviousRunsPath = ".\PreviousRuns\"
+$OutPath = ".\Processed\"
 
-    $PreviousRunsPath = ".\PreviousRuns\GEMStakeholderAcccounts.csv"
-	$csvDataOld = Import-Csv -Path  $PreviousRunsPath 
-    $csvDataNew = Import-Csv -Path ".\GEMStakeholderAcccounts.csv"
-	$OutPath = ".\Processed\GEMStakeholderAcccounts.csv"
+function deDupe {
+	
+	param (
+		[string]$FileName,
+		[string]$KeyField
+		
+		)
+
+
+	$csvDataOld = Import-Csv -Path "$PreviousRunsPath$FileName"
+    $csvDataNew = Import-Csv -Path  ".\$FileName";
+	
 
     foreach ($newRow in $csvDataNew) {
         # Access column values using dot notation
-        Write-Host "Stakeholder_ID: $($row.Stakeholder_ID)"
-        
+      
+        Write-Host "Key field is $KeyField"
         # Perform other operations with $row.ColumnName
-		 $foundRow = $csvDataOld |Where-Object { $_.Stakeholder_ID -eq $($newRow.Stakeholder_ID) }
-				
+		# $foundRow = $csvDataOld |Where-Object { $_.$KeyField -eq $($newRow.$KeyField) }
+		$x = $newRow.$KeyField
+		$foundRow = $csvDataOld |Where-Object { $_.$KeyField -eq $x }
+		# $foundRow = $csvDataOld |Where-Object { $_.($($KeyField)) -eq $($newRow.Stakeholder_ID) }
+		
+		 
 		 if ($null -ne $foundRow) {
-			Write-Host "found duplicate $($foundRow.Stakeholder_ID) previous update :  $($foundRow.last_updated_on)" ;
+			$dup = $foundRow.$KeyField
+			Write-Host "found duplicate  $dup"
 		  	$oldDate = [datetime]::parseexact($foundRow.last_updated_on , 'yyyy-MM-dd HH:mm:ss.fff',$null);
 		    $newDate = [datetime]::parseexact($newRow.last_updated_on, 'yyyy-MM-dd HH:mm:ss.fff',$null);
 		  
@@ -37,4 +53,9 @@ The updated fiel is saved to OutPath
     }
 	
 	#save the processed output
-	$csvDataNew | Where-Object  { $_.Program_ID -notlike  "*delete*" } | Export-Csv $OutPath -NoTypeInformation -Force
+	$csvDataNew | Where-Object  { $_.Program_ID -notlike  "*delete*" } | Export-Csv "$OutPath$FileName" -NoTypeInformation -Force
+	
+}
+
+
+deDupe -FileName "GEMStakeholderAcccounts.csv" -KeyField Stakeholder_ID ;
