@@ -37,9 +37,25 @@ function addRoundID {
 	}
 	
 	
+	$updatedCsvData = $csvDataNew | ForEach-Object {
+    $currentRow = $_
+    
+    # Create an ordered hashtable to define the new column order
+    $properties = [ordered]@{}
+    $properties.Add($roundColumnName, $RoundId) # Add the new column first
+
+    # Add all existing properties from the current row
+    foreach ($property in $currentRow.PSObject.Properties) {
+        $properties.Add($property.Name, $property.Value)
+    }
+    
+    # Create a new custom object with the defined order
+    [PSCustomObject]$properties
+}
+	
 	
 	#save the processed output
-	$csvDataNew | Where-Object  { $_.Program_ID -notlike  "*delete*" } | Export-Csv "$workDir$OutPath$FileName" -NoTypeInformation -Force
+	$updatedCsvData | Where-Object  { $_.Program_ID -notlike  "*delete*" } | Export-Csv "$workDir$OutPath$FileName" -NoTypeInformation -Force
 	
 }
 
