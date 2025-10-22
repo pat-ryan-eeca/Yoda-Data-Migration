@@ -1,4 +1,4 @@
-<# checks for duplciates in GEMStakeholderAcccounts by comparing with the GEMStakeholderAcccounts in PreviousRunsPath
+<# checks for duplicates in GEM export files  by comparing with the file in PreviousRunsPath
 If a duplicate is found we check if the new data is more recent, in which case we keep it 
 Otherwise we remove the duplicate from the new file
 The updated file is saved to OutPath
