@@ -1,6 +1,6 @@
 USE [GEM_UAT]
 GO
-/****** Object:  StoredProcedure [dbo].[ExportAll]    Script Date: 20/10/2025 2:06:59 PM ******/
+/****** Object:  StoredProcedure [dbo].[ExportAll]    Script Date: 23/10/2025 1:42:52 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -105,7 +105,7 @@ EXEC xp_cmdshell  @cmd
 
 --GetGEMSubProgramContractVariationsMilestones
 						
-SET @header =  'PRINT(''Project_id,Contract_ID, milestone_ID, milestone_ref, Milestone_Title,MilestoneFinancial, MilestoneRecurrence, MilestoneType,  MilestoneStatus, MilestoneAmount, MilestoneDueDate'') ;' 
+SET @header =  'PRINT(''Project_id,Contract_ID, milestone_ID, milestone_ref, milestone_code, milestone_code_description, Milestone_Title,MilestoneFinancial, MilestoneRecurrence, MilestoneType,  MilestoneStatus, MilestoneAmount, MilestoneDueDate'') ;' 
 SET @sql = 'EXEC GetGEMSubProgramContractVariationsMilestones ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) +'"';
 SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "' + @header + @sql + ' -o ' + @RootPath + '\GetGEMSubProgramContractVariationsMilestones.csv -s "," -h -1 -y ' + CONVERT(VARCHAR(10), @MaxFieldLength);
 select @cmd
