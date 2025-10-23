@@ -1,6 +1,6 @@
 USE [GEM_UAT]
 GO
-/****** Object:  StoredProcedure [dbo].[GetGEMSubProgramContractVariationsMilestones]    Script Date: 23/10/2025 1:41:52 PM ******/
+/****** Object:  StoredProcedure [dbo].[GetGEMSubProgramContractVariationsMilestones]    Script Date: 23/10/2025 2:31:18 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -55,7 +55,7 @@ BEGIN
            
 			)
 			
-			select  vm.grant_id as project_id, vm.contract_id, vm.milestone_id,  vm2.value as milestoneRef,mc.milestone_code, mc.milestone_code_description, vm3.value as MilestoneTitle, vm4.value as MilestoneFinancial, vm5.value as MilestoneRecurrence,  vm6.value as MilestoneType, vm7.value as  MilestoneStatus,  vm8.value as MilestoneAmount,  vm9.value as  MilestoneRecurrenceStartDate
+			select  vm.grant_id as project_id, vm.contract_id, vm.milestone_id,  vm2.value as milestoneRef,mc.milestone_code, mc.milestone_code_description,  RIGHT(mc.milestone_code,4) as project_code, vm3.value as MilestoneTitle, vm4.value as MilestoneFinancial, vm5.value as MilestoneRecurrence,  vm6.value as MilestoneType, vm7.value as  MilestoneStatus,  vm8.value as MilestoneAmount,  vm9.value as  MilestoneRecurrenceStartDate
 			
 			from Variation_Milestone vm 
 			INNER JOIN Variation_Milestone vm2 on
