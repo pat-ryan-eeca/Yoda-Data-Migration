@@ -6,11 +6,11 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 -- =============================================
--- Author:		<Author,,Name>
--- Create date: <Create Date, ,>
--- Description:	<Description, ,>
+-- Author:		Pat Ryan
+-- Create date: 30/10/2025>
+-- Description:	Formats the strings for csv
 -- =============================================
-ALTER FUNCTION [dbo].[CleanString]
+CREATE OR ALTER  FUNCTION [dbo].[CleanString]
 (
 	@InString  nvarchar(MAX)
 )

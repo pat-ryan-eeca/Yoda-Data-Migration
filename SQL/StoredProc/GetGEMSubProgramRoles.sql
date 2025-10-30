@@ -10,7 +10,7 @@ GO
 -- Create date: 10/9/2025
 -- Description:	 Rteurns Roles for an Activity (i.e a Subprogram)
 -- =============================================
-ALTER PROCEDURE [dbo].[GetGEMSubProgramRoles]
+CREATE OR ALTER PROCEDURE [dbo].[GetGEMSubProgramRoles]
 		--
 	@ProgramId INT,
 	@SubProgramId INT

@@ -10,7 +10,7 @@ GO
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-ALTER PROCEDURE [dbo].[GetGEMSubProgramContracts]
+CREATE OR ALTER PROCEDURE [dbo].[GetGEMSubProgramContracts]
 	-- Add the parameters for the stored procedure here
 	@ProgramId INT,
 	@SubProgramId INT,

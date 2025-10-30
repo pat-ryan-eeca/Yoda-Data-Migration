@@ -6,11 +6,11 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 -- =============================================
--- Author:		<Author,,Name>
--- Create date: <Create Date,,>
--- Description:	<Description,,>
+-- Author:		Pat Ryan
+-- Create date: 30/10/2025
+-- Description:	Runs all the Yoda export scripst wiht th egiven parameters
 -- =============================================
-ALTER PROCEDURE [dbo].[ExportAll] 
+CREATE OR ALTER PROCEDURE [dbo].[ExportAll] 
 	@ProgramId INT,
 	@SubProgramId INT,
 	@External_Reference VARCHAR(200)='',
@@ -67,6 +67,13 @@ SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "'  + @header + @sql + ' -o ' + 
 select @cmd
 EXEC xp_cmdshell  @cmd
 
+--GetGEMSubProgramProjectRoles
+SET @header =  'PRINT(''Program_ID, Subprogram_ID, Project_ID, Role_Code, Stakeholder_Name, Stakeholder_ID'');' 
+SET @sql = 'EXEC GetGEMSubProgramProjectRoles ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) +'"';
+SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "'  + @header + @sql + ' -o ' + @RootPath + '\GetGEMSubProgramProjectRoles.csv -s "," -h -1 -y ' + CONVERT(VARCHAR(10), @MaxFieldLength);
+select @cmd
+EXEC xp_cmdshell  @cmd
+
 --GetGEMSubProgramFiles
 SET @header =  'PRINT(''Program_ID, Subprogram_ID, Project_ID, Contract_ID, filename, document_title'');' 
 SET @sql = 'EXEC GetGEMSubProgramContractsFiles ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) +'"';
@@ -74,12 +81,7 @@ SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "'  + @header + @sql + ' -o ' + 
 select @cmd
 EXEC xp_cmdshell  @cmd
 
---GetGEMSubProgramProjectRoles
-SET @header =  'PRINT(''Program_ID, Subprogram_ID, Project_ID, Role_Code, Stakeholder_Name, Stakeholder_ID'');' 
-SET @sql = 'EXEC GetGEMSubProgramProjectRoles ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) +'"';
-SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "'  + @header + @sql + ' -o ' + @RootPath + '\GetGEMSubProgramProjectRoles.csv -s "," -h -1 -y ' + CONVERT(VARCHAR(10), @MaxFieldLength);
-select @cmd
-EXEC xp_cmdshell  @cmd
+
 
 --GetGEMSubProgramContractVariations		 
 SET @header =  'PRINT(''project_id, Contract_ID, Applicant, Workflow_Instance_ID, Title,  Type, RequestedOn, ContractorSignatoryName,status, EnteredOnOn, ExecutionDate,Request_Summary, RIARecomendation, RIASummary, RIAReviewer, InternalReviewOutcome,RODecisonBy,InternalReviewComment,InternalReviewRecommendation, InteralReviewEnteredBy,ContractDescription, CompletionDate, CommencementDate, ContractorSignatoryPosition,ContractCap,AuthorityToSign,ProjectCode, File_ID, File_Name'');' 

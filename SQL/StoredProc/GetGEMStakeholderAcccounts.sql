@@ -10,7 +10,7 @@ GO
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-ALTER PROCEDURE [dbo].[GetGEMStakeholderAcccounts]
+CREATE OR ALTER PROCEDURE [dbo].[GetGEMStakeholderAcccounts]
 	@ProgramId INT,
 	@SubProgramId INT,
 	@External_Reference VARCHAR(200)=''

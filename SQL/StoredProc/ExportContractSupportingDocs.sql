@@ -6,11 +6,11 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 -- =============================================
--- Author:		<Author,,Name>
--- Create date: <Create Date,,>
--- Description:	<Description,,>
+-- Author:		Pat Ryan
+-- Create date: 30/10/2025
+-- Description:	Export all contract supporting docs  for the given program, subprogram to a directory
 -- =============================================
-ALTER PROCEDURE [dbo].[ExportContractSupportingDocs]
+CREATE OR ALTER PROCEDURE [dbo].[ExportContractSupportingDocs]
 	@ProgramId INT,
 	@SubProgramId INT,
 	@Rootdir  NVARCHAR (2000),

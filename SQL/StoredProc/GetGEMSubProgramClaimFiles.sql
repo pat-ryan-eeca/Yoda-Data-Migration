@@ -10,7 +10,7 @@ GO
 -- Create date: 8/9/20205
 -- Description: return claim fiels for a subprogram
 -- =============================================
-ALTER PROCEDURE [dbo].[GetGEMSubProgramClaimFiles]
+CREATE OR ALTER PROCEDURE [dbo].[GetGEMSubProgramClaimFiles]
 	@ProgramId INT,
 	@SubProgramId INT,
 	@External_Reference VARCHAR(200)=''

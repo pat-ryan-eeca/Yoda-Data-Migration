@@ -6,11 +6,11 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 -- =============================================
--- Author:		<Author,,Name>
--- Create date: <Create Date,,>
--- Description:	<Description,,>
+-- Author:		Pat Ryan
+-- Create date: 30/10/2025
+-- Description:	Retun claims and paymenst fro a milestone
 -- =============================================
-ALTER PROCEDURE [dbo].[GetGEMSubProgramMilestonesClaimsPayments]
+CREATE OR ALTER PROCEDURE [dbo].[GetGEMSubProgramMilestonesClaimsPayments]
 	-- Add the parameters for the stored procedure here
 	@ProgramId INT,
 	@SubProgramId INT,

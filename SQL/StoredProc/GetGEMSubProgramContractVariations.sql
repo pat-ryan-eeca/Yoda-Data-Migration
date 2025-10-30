@@ -6,11 +6,11 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 -- =============================================
--- Author:		<Author,,Name>
--- Create date: <Create Date,,>
--- Description:	<Description,,>
+-- Author:		Pat Ryan
+-- Create date: 30/10/2025
+-- Description:	Returns contarct variations for a subprogram
 -- =============================================
-ALTER PROCEDURE [dbo].[GetGEMSubProgramContractVariations]
+CREATE OR ALTER PROCEDURE [dbo].[GetGEMSubProgramContractVariations]
 @ProgramId INT,
 @SubProgramId INT,
 @External_Reference VARCHAR(200)=''

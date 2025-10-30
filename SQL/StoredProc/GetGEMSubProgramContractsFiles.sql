@@ -10,7 +10,7 @@ GO
 -- Create date: 8/9/2025
 -- Description:	Get Files associated with a contract
 -- =============================================
-ALTER PROCEDURE [dbo].[GetGEMSubProgramContractsFiles] 
+CREATE OR ALTER PROCEDURE [dbo].[GetGEMSubProgramContractsFiles] 
 	@ProgramId INT,
 	@SubProgramId INT,
 	@External_Reference VARCHAR(200)=''

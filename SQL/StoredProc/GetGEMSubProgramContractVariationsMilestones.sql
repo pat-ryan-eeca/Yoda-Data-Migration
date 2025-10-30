@@ -11,7 +11,7 @@ GO
 -- Description:	returns milestones associated with a contract variation
 -- =============================================
 
-ALTER PROCEDURE [dbo].[GetGEMSubProgramContractVariationsMilestones]
+CREATE OR ALTER PROCEDURE [dbo].[GetGEMSubProgramContractVariationsMilestones]
 @ProgramId INT,
 @SubProgramId INT,
 @External_Reference VARCHAR(200)=''

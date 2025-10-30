@@ -8,9 +8,9 @@ GO
 -- =============================================
 -- Author:		Pat Ryan
 -- Create date: 17-09-2025
--- Description:	Return the supporting docs for a contratc variation
+-- Description:	Return the supporting docs for a contract variation
 -- =============================================
-ALTER PROCEDURE [dbo].[GetGEMSubProgramContractVariationsSupportingDocs]
+CREATE OR ALTER PROCEDURE [dbo].[GetGEMSubProgramContractVariationsSupportingDocs]
 @ProgramId INT,
 @SubProgramId INT,
 @External_Reference VARCHAR(200)=''

@@ -10,7 +10,7 @@ GO
 -- Create date: 10/9/2025
 -- Description:	 Rteurns Roles for an Initiative (i.e a program)
 -- =============================================
-ALTER PROCEDURE [dbo].[GetGEMProgramRoles]
+CREATE OR ALTER PROCEDURE [dbo].[GetGEMProgramRoles]
 		--
 	@ProgramId INT
 AS

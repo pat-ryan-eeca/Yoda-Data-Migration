@@ -10,7 +10,7 @@ GO
 -- Create date: 18/8/2025
 -- Description:	Export all claim files for the given program, subprogram to a directory
 -- =============================================
-ALTER PROCEDURE [dbo].[ExportClaimFiles]
+CREATE OR ALTER PROCEDURE [dbo].[ExportClaimFiles]
 	@ProgramId INT,
 	@SubProgramId INT,
 	@Rootdir  NVARCHAR (2000),
