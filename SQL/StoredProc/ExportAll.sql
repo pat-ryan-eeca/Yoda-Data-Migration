@@ -1,6 +1,6 @@
 USE [GEM_UAT]
 GO
-/****** Object:  StoredProcedure [dbo].[ExportAll]    Script Date: 23/10/2025 2:33:29 PM ******/
+/****** Object:  StoredProcedure [dbo].[ExportAll]    Script Date: 10/31/2025 2:54:52 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -10,7 +10,7 @@ GO
 -- Create date: 30/10/2025
 -- Description:	Runs all the Yoda export scripst wiht th egiven parameters
 -- =============================================
-CREATE OR ALTER PROCEDURE [dbo].[ExportAll] 
+ALTER   PROCEDURE [dbo].[ExportAll] 
 	@ProgramId INT,
 	@SubProgramId INT,
 	@External_Reference VARCHAR(200)='',
@@ -29,6 +29,7 @@ SET @RootPath = @RootPath + FORMAT(GETDATE(), 'yyyy-MM-dd_HH_mm')+'\'
 SET @cmd= 'mkdir "' + @RootPath + '"';
 PRINT 'Creating output folder ' + @RootPath; 
 EXEC xp_cmdshell @cmd;
+
 
 --LEHV
 --GetGEMSubProgram
@@ -130,16 +131,26 @@ SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "' + @header + @sql + ' -o ' + @
 select @cmd
 EXEC xp_cmdshell  @cmd
 
+
+
+
 --Claim Files
-SET @FilePath = @RootPath + '\ClaimFiles\';
+SET @cmd= 'mkdir "' + @RootPath + 'ClaimFiles\'+ '"';
+EXEC xp_cmdshell @cmd;
+
+SET @FilePath = @RootPath + 'ClaimFiles\';
 EXEC  ExportClaimFiles @ProgramID, @SubProgramId, @FilePath
 
 --contract Files
-SET @FilePath = @RootPath + '\ContractFiles\';
+SET @cmd= 'mkdir "' + @RootPath + 'ContractFiles\'+ '"';
+EXEC xp_cmdshell @cmd;
+SET @FilePath = @RootPath + 'ContractFiles\';
 EXEC  ExportContractFiles @ProgramID, @SubProgramId, @FilePath
 
 -- contract supporting docs
-SET @FilePath = @RootPath + '\ContractSupportingDocs\';
+SET @cmd= 'mkdir "' + @RootPath + 'ContractSupportingDocs\'+ '"';
+EXEC xp_cmdshell @cmd;
+SET @FilePath = @RootPath + 'ContractSupportingDocs\';
 EXEC  ExportContractSupportingDocs @ProgramID, @SubProgramId, @FilePath
 
 
