@@ -1,6 +1,6 @@
 USE [GEM_UAT]
 GO
-/****** Object:  StoredProcedure [dbo].[ExportContractSupportingDocs]    Script Date: 25/09/2025 1:24:28 PM ******/
+/****** Object:  StoredProcedure [dbo].[ExportContractSupportingDocs]    Script Date: 10/31/2025 2:22:58 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -10,7 +10,7 @@ GO
 -- Create date: 30/10/2025
 -- Description:	Export all contract supporting docs  for the given program, subprogram to a directory
 -- =============================================
-CREATE OR ALTER PROCEDURE [dbo].[ExportContractSupportingDocs]
+CREATE OR ALTER   PROCEDURE [dbo].[ExportContractSupportingDocs]
 	@ProgramId INT,
 	@SubProgramId INT,
 	@Rootdir  NVARCHAR (2000),
@@ -22,11 +22,13 @@ DECLARE @Filename NVARCHAR (2000);
 DECLARE @Obj INT
 DECLARE @ReturnCode INT
 DECLARE  @grant_step_field_id INT =4235
+DECLARE @FileID INT
+DECLARE @FullPath NVARCHAR (2000)
 
 DECLARE cursor_contract  CURSOR FOR
 
 		SELECT
-		 convert (IMAGE, f.file_data, 1), f.File_Name
+		 f.File_ID, f.File_Name
 		
 
       FROM
@@ -83,14 +85,14 @@ DECLARE cursor_contract  CURSOR FOR
 
 OPEN cursor_contract;
 
-FETCH NEXT FROM cursor_contract INTO @ImageData, @Filename
+FETCH NEXT FROM cursor_contract INTO @FileID, @Filename
 WHILE @@FETCH_STATUS = 0
 
 BEGIN
-
+	SET @FullPath = @RootDir+@Filename
 	PRINT  'extracting ' +  @Filename 
-	exec ExportImageToFile @RootDir, @Filename,  @ImageData
-	FETCH NEXT FROM cursor_contract INTO @ImageData, @Filename
+	exec ExportImageToFile @FileID,'File', @FullPath
+	FETCH NEXT FROM cursor_contract INTO @FileID, @Filename
 END;
 -- Close the cursor to release resources
 CLOSE cursor_contract;

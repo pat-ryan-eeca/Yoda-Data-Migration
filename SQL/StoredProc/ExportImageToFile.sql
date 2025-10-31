@@ -1,45 +1,35 @@
 USE [GEM_UAT]
 GO
-/****** Object:  StoredProcedure [dbo].[ExportClaimFiles]    Script Date: 10/30/2025 1:28:20 PM ******/
+/****** Object:  StoredProcedure [dbo].[ExportImageToFile2]    Script Date: 10/30/2025 4:41:52 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 -- =============================================
 -- Author:		Pat Ryan
--- Create date: 18/8/2025
--- Description:	Export all claim files for the given program, subprogram to a directory
+-- Create date: 31/10/2025
+-- Description:	export image data to files
 -- =============================================
-CREATE OR ALTER PROCEDURE [dbo].ExportImageToFile
-	@ImageData VARBINARY (max),
-	@Rootdir  NVARCHAR (2000),
+CREATE OR ALTER PROCEDURE [dbo].[ExportImageToFile]
+	
+	@FileId  INT,
+	@TableName NVARCHAR (200),
 	@Filename NVARCHAR (2000)
+		
 AS
- BEGIN TRY
-	DECLARE @Obj INT;
-	DECLARE @ReturnCode INT;
-	DECLARE @Path2OutFile NVARCHAR (2000);
+BEGIN
+-- select imagedata into temprary table
 
-     EXEC @ReturnCode = sp_OACreate 'ADODB.Stream' ,@Obj OUTPUT;
-	 select  @ReturnCode
-     EXEC  @ReturnCode =sp_OASetProperty @Obj ,'Type',1;
-	 select  @ReturnCode
-     EXEC @ReturnCode = sp_OAMethod @Obj,'Open';
-	 select @ReturnCode
-     EXEC  @ReturnCode =sp_OAMethod @Obj,'Write', NULL, @ImageData;
-	 select  @ReturnCode
-	 SET @Path2OutFile= @Rootdir+@Filename
-	 EXEC @ReturnCode =sp_OAMethod @Obj,'SaveToFile', NULL, @Path2OutFile, 2;
-	 select @ReturnCode
-     EXEC  @ReturnCode= sp_OAMethod @Obj,'Close';
-	 select  @ReturnCode
-     EXEC @ReturnCode= sp_OADestroy @Obj;
-	 select @ReturnCode
-     
-    END TRY
-    
- BEGIN CATCH
-  EXEC sp_OADestroy @Obj;
-  select 8
- END CATCH
+	DECLARE @cmd  NVARCHAR (2000)
+	SET @cmd = cast(@FileId as NVARCHAR(200))
+	SET @cmd = 'BCP "SELECT f.file_data  from '+ @TableName + ' f where f.file_id='+ cast(@FileId as NVARCHAR(200)) +' "' +  ' queryout "'+  @Filename + '" -T -N -S EECAGEMUDB1'
+	
+	PRINT @cmd
+	--SET @cmd = 'BCP "SELECT  f.file_data from GEM_UAT.dbo.COMM_Files f where f.file_id = 427" queryout "C:\temp\33333.txt" -T -N -S EECAGEMUDB1'
+	SET @cmd = 'BCP "SELECT  f.file_data from GEM_UAT.dbo.COMM_Files f where f.file_id='+ cast(@FileId as NVARCHAR(200)) +' "' + ' queryout "' +  @Filename + '" -T -N -S EECAGEMUDB1'
+	PRINT @cmd
 
+   EXEC xp_cmdshell  @cmd
+
+
+END

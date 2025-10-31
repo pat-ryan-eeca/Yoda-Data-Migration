@@ -22,20 +22,20 @@ dedupe.ps1
 - create ProcessedDirectory and PreviousRuns directoy in working directory
 - copy/merge new files to PreviousRuns once complete
 - create a log file 
-
+GetGEMSubProgramContractVariations is slow
 
 #How to install the stored procedures
 
 1. create a working directroy that the database user has permissionm to access (note taht although I was logged on to the database as a a windwos usewr, my windwos directory was not accessable from a SQL script run from ssms on the daatbase server. I had to cretae the folder using a tlsql script -  from the ssms console ,
 `DECLARE @RootPath VARCHAR(255) = 'c:\temp\yoda\StoredProc\';
-
-
 SET @cmd= 'mkdir "' + @RootPath + '"';
 PRINT 'Creating output folder ' + @RootPath; 
-EXEC xp_cmdshell @cmd;`
-
+EXEC xp_cmdshell @cmd;
+`
 
 2. checkout the code from git, and copy to the root folder, then run (from mssql) the script
 
 'UpdateYodaStoredProcs.sql'
 
+
+GetGEMSubProgramContractVariations is slow
