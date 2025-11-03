@@ -1,6 +1,6 @@
 USE [GEM_UAT]
 GO
-/****** Object:  StoredProcedure [dbo].[ExportAll]    Script Date: 10/31/2025 2:54:52 PM ******/
+/****** Object:  StoredProcedure [dbo].[ExportAll]    Script Date: 11/3/2025 11:26:13 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -14,7 +14,8 @@ ALTER   PROCEDURE [dbo].[ExportAll]
 	@ProgramId INT,
 	@SubProgramId INT,
 	@External_Reference VARCHAR(200)='',
-	@RootPath VARCHAR(255) = 'c:\temp\GEMEXPORT2\'
+	@RootPath VARCHAR(255) = 'c:\temp\GEMEXPORT2\',
+	@SkipFiles BIT = 1  -- if 1 (true) files are not exported
 
 AS
 BEGIN
@@ -132,27 +133,31 @@ select @cmd
 EXEC xp_cmdshell  @cmd
 
 
+if @SkipFiles=0
+begin
+	PRINT 'exporting files';
+	--Claim Files
+	SET @cmd= 'mkdir "' + @RootPath + 'ClaimFiles\'+ '"';
+	EXEC xp_cmdshell @cmd;
+	SET @FilePath = @RootPath + 'ClaimFiles\';
+	--EXEC  ExportClaimFiles @ProgramID, @SubProgramId, @FilePath
 
+	--contract Files
+	SET @cmd= 'mkdir "' + @RootPath + 'ContractFiles\'+ '"';
+	EXEC xp_cmdshell @cmd;
+	SET @FilePath = @RootPath + 'ContractFiles\';
+	-- EXEC  ExportContractFiles @ProgramID, @SubProgramId, @FilePath
 
---Claim Files
-SET @cmd= 'mkdir "' + @RootPath + 'ClaimFiles\'+ '"';
-EXEC xp_cmdshell @cmd;
+	-- contract supporting docs
+	SET @cmd= 'mkdir "' + @RootPath + 'ContractSupportingDocs\'+ '"';
+	EXEC xp_cmdshell @cmd;
+	SET @FilePath = @RootPath + 'ContractSupportingDocs\';
+	EXEC  ExportContractSupportingDocs @ProgramID, @SubProgramId, @FilePath
 
-SET @FilePath = @RootPath + 'ClaimFiles\';
-EXEC  ExportClaimFiles @ProgramID, @SubProgramId, @FilePath
-
---contract Files
-SET @cmd= 'mkdir "' + @RootPath + 'ContractFiles\'+ '"';
-EXEC xp_cmdshell @cmd;
-SET @FilePath = @RootPath + 'ContractFiles\';
-EXEC  ExportContractFiles @ProgramID, @SubProgramId, @FilePath
-
--- contract supporting docs
-SET @cmd= 'mkdir "' + @RootPath + 'ContractSupportingDocs\'+ '"';
-EXEC xp_cmdshell @cmd;
-SET @FilePath = @RootPath + 'ContractSupportingDocs\';
-EXEC  ExportContractSupportingDocs @ProgramID, @SubProgramId, @FilePath
-
-
+end
+else 
+begin
+	PRINT 'skipping file  export';
+end
 
 END
