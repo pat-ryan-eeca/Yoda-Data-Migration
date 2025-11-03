@@ -1,10 +1,4 @@
-<# checks for duplicates in GEM export files  by comparing with the file in PreviousRunsPath
-If a duplicate is found we check if the new data is more recent, in which case we keep it 
-Otherwise we remove the duplicate from the new file
-The updated file is saved to OutPath
-
-Run this script from the directory above rootdir
-The source files shoudl be in workDir
+<#add a column called RoundId to GEMSubProgramContracts.csv if not already presesent and populate with 100
 #>
 
 #constants
