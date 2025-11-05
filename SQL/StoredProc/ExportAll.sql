@@ -10,7 +10,7 @@ GO
 -- Create date: 30/10/2025
 -- Description:	Runs all the Yoda export scripst wiht th egiven parameters
 -- =============================================
-ALTER   PROCEDURE [dbo].[ExportAll] 
+CREATE OR ALTER  PROCEDURE [dbo].[ExportAll] 
 	@ProgramId INT,
 	@SubProgramId INT,
 	@External_Reference VARCHAR(200)='',

@@ -10,7 +10,7 @@ GO
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-ALTER PROCEDURE [dbo].[GetGEMSubProgram]
+CREATE OR ALTER PROCEDURE [dbo].[GetGEMSubProgram]
 	--
 	@ProgramId INT,
 	@SubProgramId INT

@@ -176,8 +176,6 @@ select  LTRIM(RTRIM (p.project_id)) as project_id,
 		LEFT   JOIN [dbo].[File] f on
 		f.File_ID = cgd6.File_ID
 
-
-
 	  
 	  where  p.Program_ID = @ProgramId
 			and p.Subprogram_ID =@SubProgramId
