@@ -181,6 +181,7 @@ select  LTRIM(RTRIM (p.project_id)) as project_id,
 	  where  p.Program_ID = @ProgramId
 			and p.Subprogram_ID =@SubProgramId
 			and p.External_Reference like '%'+@External_Reference +'%'
+			and cgd.Value is not null
 			
 
 
