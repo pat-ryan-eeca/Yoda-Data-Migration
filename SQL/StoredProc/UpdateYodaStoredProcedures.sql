@@ -78,4 +78,5 @@ EXEC xp_cmdshell  @cmd
 SET @cmd = 'sqlcmd -i' + @RootPath + 'ExportAll.sql'
 EXEC xp_cmdshell  @cmd
 
-
+SET @cmd = 'sqlcmd -i' + @RootPath + 'ExportImageToFile.sql'
+EXEC xp_cmdshell  @cmd
