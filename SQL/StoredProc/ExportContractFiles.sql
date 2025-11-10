@@ -10,7 +10,7 @@ GO
 -- Create date: 18/8/2025
 -- Description:	Export all claim files for the given program, subprogram to a directory
 -- =============================================
-CREATE OR ALTER   PROCEDURE [dbo].[ExportClaimFiles]
+CREATE OR ALTER   PROCEDURE [dbo].[ExportContractFiles]
 	@ProgramId INT,
 	@SubProgramId INT,
 	@Rootdir  NVARCHAR (2000),
@@ -29,11 +29,13 @@ DECLARE cursor_contract  CURSOR FOR
 	SELECT f.file_id, f.filename
 		from Project p
 		INNER JOIN contract c on c.Project_ID = p.Project_ID
-		INNER JOIN PRJ_Milestones m on p.Project_ID=m.project_id
-		INNER JOIN PRJ_MilestoneClaims mc on mc.milestone_id = m.milestone_id
-		INNER JOIN PRJ_ClaimDocuments cd on cd.claim_id = mc.claim_id 
-		INNER JOIN  COMM_Documents d on d.document_id = cd.document_id
-		join COMM_Files f on f.file_id = d.file_id
+		 join COMM_DocumentsUniversalResources u
+			on p.Uro_ID= u.universal_resource_id
+		join [GEM_UAT].[dbo].[COMM_Documents] d
+			on u.document_id=d.document_id
+		join COMM_Files f
+			on d.file_id=f.file_id
+
 
 	where p.Subprogram_ID =@SubProgramId 
 	and p.Program_ID = @ProgramId 
