@@ -1,6 +1,6 @@
 USE [GEM_UAT]
 GO
-/****** Object:  StoredProcedure [dbo].[GetGEMSubProgramContractVariations]    Script Date: 11/12/2025 1:58:53 PM ******/
+/****** Object:  StoredProcedure [dbo].[GetGEMSubProgramContractVariations]    Script Date: 11/12/2025 2:44:03 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -10,7 +10,7 @@ GO
 -- Create date: 30/10/2025
 -- Description:	Returns contarct variations for a subprogram
 -- =============================================
-ALTER   PROCEDURE [dbo].[GetGEMSubProgramContractVariations]
+CREATE OR ALTER   PROCEDURE [dbo].[GetGEMSubProgramContractVariations]
 @ProgramId INT,
 @SubProgramId INT,
 @External_Reference VARCHAR(200)='',
@@ -51,6 +51,16 @@ select
 	  where  p.Program_ID = @ProgramId
 			and p.Subprogram_ID =@SubProgramId
 			and p.External_Reference like '%'+@External_Reference +'%'
+			--dedupe
+			and gwi.Workflow_Instance_ID in 
+			(
+			
+			SELECT MIN(gwi.Workflow_Instance_ID) AS ID
+				
+				FROM GrantWorkflowInstance gwi
+				
+				GROUP BY Parent_Workflow_Instance_ID			
+			)
 		
 	)
 
