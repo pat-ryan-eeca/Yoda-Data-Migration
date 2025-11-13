@@ -4,3 +4,6 @@ logs/dedupe.log
 __pycache__/query_mysql.cpython-312.pyc
 PowerShell/logs/dedupe.log
 PowerShell/logs/query_mysql.log
+scripts/PowerShell/logs/dedupe.log
+scripts/PowerShell/logs/dedupe.log
+scripts/Python/__pycache__/query_mysql.cpython-312.pyc

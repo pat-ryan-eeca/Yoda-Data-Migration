@@ -109,7 +109,28 @@ def query_mysql(sql: str, params: Optional[Tuple[Any, ...]] = None) -> List[Dict
             except Exception:
                 pass
 
-
+def log_sql_with_params(sql: str, params: Optional[Tuple[Any, ...]] = None) -> str:
+    """Return the SQL statement with parameters interpolated for logging.
+    
+    Warning: This is for logging/debugging only. Use parameterized queries 
+    in actual execution to prevent SQL injection.
+    """
+    if not params:
+        return sql
+    
+    # Simple interpolation for logging (not safe for execution)
+    result = sql
+    for param in params:
+        if isinstance(param, str):
+            # Escape single quotes in strings
+            escaped = param.replace("'", "''")
+            result = result.replace('%s', f"'{escaped}'", 1)
+        elif param is None:
+            result = result.replace('%s', 'NULL', 1)
+        else:
+            result = result.replace('%s', str(param), 1)
+    
+    return result
 
 def record_exists(table: str, field: str, value: Any) -> bool:
     """Return True if exactly one record exists in `table` where `field` = value,
@@ -135,5 +156,58 @@ def record_exists(table: str, field: str, value: Any) -> bool:
         return True
     raise ValueError(f"More than one record found in {table} where {field}={value!r}")
 
+def records_exist_batch(table: str, field: str, id_list: str) -> List[str]:
+    """Check which IDs from a comma-separated list exist in the table.
+    
+    Args:
+        table: Table name to query
+        field: Field name to match against
+        id_list: Comma-separated string of IDs (e.g. "10643,11145,11189")
+    
+    Returns:
+        List of IDs that exist in the table
+    
+    Raises:
+        ValueError: If table or field names are invalid
+    """
+    # Validate identifiers (allow letters, digits and underscores, must not start with a digit)
+    ident_re = r'^[A-Za-z_][A-Za-z0-9_]*$'
+    if not re.match(ident_re, table):
+        logger.error(f"Invalid table name: {table!r}")
+        raise ValueError(f"Invalid table name: {table!r}")
+    if not re.match(ident_re, field):
+        logger.error(f"Invalid field name: {field!r}")
+        raise ValueError(f"Invalid field name: {field!r}")
+
+    # Parse and clean the comma-separated list
+    ids = [id_str.strip() for id_str in id_list.split(',') if id_str.strip()]
+    
+    if not ids:
+        logger.warning("Empty ID list provided")
+        return []
+
+    logger.info(f"Checking {len(ids)} IDs in {table}.{field}")
+
+    # Build placeholders: %s, %s, %s, ...
+    placeholders = ','.join(['%s'] * len(ids))
+    sql = f"SELECT DISTINCT `{field}` FROM `{table}` WHERE `{field}` IN ({placeholders})"
+    params_tuple = tuple(ids)
+    
+    # Log both parameterized and interpolated SQL
+    logger.info(f"Executing (parameterized): {sql}")
+    logger.info(f"Executing (interpolated): {log_sql_with_params(sql, params_tuple)}")
+
+    
+
+    try:
+        rows = query_mysql(sql, tuple(ids))
+        existing_ids = [row[field] for row in rows]
+        logger.info(f"Found {len(existing_ids)} existing IDs out of {len(ids)}")
+        return existing_ids
+    except Exception as e:
+        logger.error(f"Error querying batch IDs: {e}")
+        raise
+
 
 #record_exists(field="RECORD_ID", table="DIM_CLA_CLIENT_ACCOUNT", value="123")
+records_exist_batch(field="RECORD_ID", table="DIM_CLA_CLIENT_ACCOUNT", id_list="123,345,")
