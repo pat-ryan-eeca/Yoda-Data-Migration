@@ -18,17 +18,18 @@ Otherwise mark at as a duplciatecd
 #>
 
 param(
-    [string]$FileName = "..\Workspace\GEMStakeholderAcccounts.csv",
+    [string]$FileName = ".\Workspace\GEMStakeholderAcccounts.csv",
     [string]$GemIDField = "Stakeholder_ID",
     [string]$ERWTable = "DIM_CLA_CLIENT_ACCOUNT",
     [string]$ERWKeyField = "RECORD_ID"
 )
 
 #Constants
-$OutPath = ".\Processed\"
-$LogPath = ".\logs\dedupe.log"
+#paths relative to project root
+$OutPath = "..\Processed\"
+$LogPath = "..\logs\dedupe.log"
 
-$pyScript = Resolve-Path -Path (Join-Path $PSScriptRoot '..\scripts\call_record_exists.py')
+$pyScript = Resolve-Path -Path (Join-Path $PSScriptRoot '..\Python\call_record_exists.py')
 # Create logs directory if it doesn't exist
 New-Item -ItemType Directory -Force -Path (Split-Path $LogPath) | Out-Null
 

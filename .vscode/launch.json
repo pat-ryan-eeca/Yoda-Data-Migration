@@ -6,6 +6,7 @@
             "type": "PowerShell",
             "request": "launch",
             "script": "${workspaceFolder}\\PowerShell\\deDupeWithERW.ps1",
+            "cwd": "${workspaceFolder}",
             "args": [
                 "-FileName", "..\\Workspace\\GEMStakeholderAcccounts.csv",
                 "-GemIDField", "Stakeholder_ID",
