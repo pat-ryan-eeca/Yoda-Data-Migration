@@ -1,0 +1,40 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "PowerShell: deDupeWithERW",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "${workspaceFolder}\\PowerShell\\deDupeWithERW.ps1",
+            "args": [
+                "-FileName", "..\\Workspace\\GEMStakeholderAcccounts.csv",
+                "-GemIDField", "Stakeholder_ID",
+                "-ERWTable", "DIM_CLA_CLIENT_ACCOUNT",
+                "-ERWKeyField", "RECORD_ID"
+            ]
+        },
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: query_mysql.py",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/query_mysql.py",
+            "console": "integratedTerminal",
+            "env": {
+                "MYSQL_HOST": "localhost",
+                "MYSQL_USER": "root",
+                "MYSQL_PASSWORD": "password",
+                "MYSQL_DATABASE": "yourdb",
+                "PYTHON_LOG_FILE": ".\\logs\\query_mysql.log",
+                "PYTHON_LOG_LEVEL": "DEBUG"
+            }
+        }
+    ]
+}

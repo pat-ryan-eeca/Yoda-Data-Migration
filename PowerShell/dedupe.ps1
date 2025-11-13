@@ -6,7 +6,7 @@ The updated file is saved to OutPath
 
 #constants
 $PreviousRunsPath = ".\PreviousRuns\"
-$OutPath = ".\Processed\"
+$OutPath = ".\Processed\"PowerShell/dedupe.ps1
 
 function deDupe {
 	

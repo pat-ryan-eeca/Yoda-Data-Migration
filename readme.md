@@ -1,5 +1,12 @@
 
 # Prerequsisites
+The pyhton scripst get teh database cerdentials from environment variables. Set it up with soemthing like
+
+setx MYSQL_HOST "reporting.uat-enquire.cloud"
+setx MYSQL_PORT "6033"
+setx MYSQL_USER "eeca_rpt_user"
+setx MYSQL_PASSWORD "get from Password1"
+setx MYSQL_DATABASE "enquire_reporting_eeca"
 
 ## Create the stored procedures
 1. Log on to the GEM database with permission to create stored proceduers
