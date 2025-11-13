@@ -1,24 +1,19 @@
 <# 
 checks for duplicates in GEM export files looking up the object id in the ERW
-If a duplicate is found we mark at as a duplicate in the soucre file
+If a duplicate is found we mark at as a duplicate in the output file
 
 The updated file is saved to OutPath
-To capture logs run with cmd
-powershell -File .\PowerShell\dedupe.ps1 > .\logs\dedupe.log 2>&1
-or
-.\PowerShell\dedupe.ps1 | Tee-Object -FilePath .\logs\dedupe.log -Append
-to write to console as well as logs
 
-e.g (with parameters)
- .\deDupeWithERW.ps1 -FileName "..\Workspace\GEMStakeholderAcccounts.csv" -GemIDField "Stakeholder_ID" -ERWTable "DIM_CLA_CLIENT_ACCOUNT" -ERWKeyField "RECORD_ID" | Tee-Object -FilePath .\logs\dedupe.log -Append
 Todo
+----
 If a duplicate is found check if the new record is more recent, if so  mark it as an update.
 Otherwise mark at as a duplciatecd 
 
 #>
 
 param(
-    [string]$FileName = ".\Workspace\GEMStakeholderAcccounts.csv",
+    [string]$InputDir = ".\Input\",
+    [string]$FileName = "GEMStakeholderAcccounts.csv",
     [string]$GemIDField = "Stakeholder_ID",
     [string]$ERWTable = "DIM_CLA_CLIENT_ACCOUNT",
     [string]$ERWKeyField = "RECORD_ID"
@@ -26,12 +21,16 @@ param(
 
 #Constants
 #paths relative to project root
-$OutPath = "..\Processed\"
-$LogPath = "..\logs\dedupe.log"
+
+$OutPath = ".\Output\"
+
+$LogPath = ".\logs\yoda.log"
 
 $pyScript = Resolve-Path -Path (Join-Path $PSScriptRoot '..\Python\call_record_exists.py')
 # Create logs directory if it doesn't exist
 New-Item -ItemType Directory -Force -Path (Split-Path $LogPath) | Out-Null
+# Create output directory if it doesn't exist
+New-Item -ItemType Directory -Force -Path (Split-Path $InPath) | Out-Null
 
 # Helper function to write to console and log file
 function Write-Log {
@@ -47,18 +46,17 @@ function Write-Log {
 function deDupe {
     
     param (
+        [string]$InputDir,
         [string]$FileName,
         [string]$GemIDField,
         [string]$ERWTable,
         [string]$ERWKeyField	
     )
 
-        if (-not (Test-Path $FileName)) {
-            Write-Log "ERROR: CSV file not found: $FileName" "Red"
-            return
+      rn
         }
 
-        $csvDataNew = Import-Csv -Path $FileName
+        $csvDataNew = Import-Csv -Path  $InputDir$FileName
         Write-Log "Opened CSV file: $FileName with $($csvDataNew.Count) rows" "Green"
 
         # Collect all unique IDs to check
@@ -121,5 +119,5 @@ function deDupe {
 }
 
 Write-Log "=== deDupeWithERW started ===" "Cyan"
-deDupe -FileName $FileName -GemIDField $GemIDField -ERWTable $ERWTable -ERWKeyField $ERWKeyField
+deDupe -InputDir $InputDir -FileName $FileName -GemIDField $GemIDField -ERWTable $ERWTable -ERWKeyField $ERWKeyField
 Write-Log "=== deDupeWithERW completed ===" "Cyan"

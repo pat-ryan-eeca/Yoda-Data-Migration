@@ -7,3 +7,10 @@ PowerShell/logs/query_mysql.log
 scripts/PowerShell/logs/dedupe.log
 scripts/PowerShell/logs/dedupe.log
 scripts/Python/__pycache__/query_mysql.cpython-312.pyc
+scripts/Python/__pycache__/query_mysql.cpython-312.pyc
+_concatBankAccount_GEMStakeholderAcccounts.csv
+Input/GEMStakeholderAcccounts.csv
+Input/Lists/LEHVF-Supplier_Details.csv
+Input/GetGEMSubProgramContractVariationsMilestones.csv
+logs/yoda.log
+scripts/Python/__pycache__/query_mysql.cpython-312.pyc

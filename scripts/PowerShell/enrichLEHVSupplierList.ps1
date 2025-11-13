@@ -1,4 +1,4 @@
-<# the  Current Supplier ID  in the sharepoint list for registered suppliers is used to match the staklehodler id from the 
+<# the  Current Supplier ID  in the sharepoint list for registered suppliers is used to match the stakleholder id from the 
 	GEMSubProgramContracts file. The stakeholder id is then appended to the sharepoint_list csv 
 #>
  

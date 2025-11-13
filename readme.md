@@ -1,6 +1,6 @@
 
 # Prerequsisites
-The pyhton scripst get teh database cerdentials from environment variables. Set it up with soemthing like
+The python scripst get the database cerdentials from environment variables. Set it up with soemthing like
 
 setx MYSQL_HOST "reporting.uat-enquire.cloud"
 setx MYSQL_PORT "6033"
@@ -16,17 +16,17 @@ SET @cmd= 'mkdir "' + @RootPath + '"';
 PRINT 'Creating output folder ' + @RootPath; 
 EXEC xp_cmdshell @cmd;
 `
-2. Run the script `UpdateYodaStoredProcedures.sql' in the .SQL\StoreedProc folder to create the stored procedure s
+2. Run the script `UpdateYodaStoredProcedures.sql' in the .scripts\SQL\StoreedProc folder to create the stored procedure 
 
 ## Data Migration 
 ### Pre-processing
-1. Find  the master migration script in the .\SQL\Export folder  (e.g for LEHVF this is ExportAllLEHVF.sql)
-2. Run the script on the database - it will cretae output csv files in a timestamped folder under the export directory 
+1. Find  the master migration script in the .\scripts\SQL\Export folder  (e.g for LEHVF this is ExportAllLEHVF.sql)
+2. Run the script on the database server - it will create output csv files in a timestamped folder under the export directory 
 1. create a workspace folder on a windows machine for the migration files, and copy the exported csv files from the database to it
-2. Copy the scripts from the PowerShell folder to the Workspace folder 
-3. Run the power shell script 'concatBankAccount.ps1'
+2. Copy the scripts from the scripts folder to the Workspace folder 
+3. Run the power shell script 'main.ps1'
 4. (LEHVF only)  Download the LEHVF Supplier List to the Workspace folder and run the script 'enrichLEHVSupplierList.ps1'
-5. Run the script 'match.ps1' (to do needs params for differnt entity types)
+
 
 ### Migration
 Load the pre-processed CSVs to Enquire using the Enquire Daat Migration Tool
@@ -34,9 +34,7 @@ Load the pre-processed CSVs to Enquire using the Enquire Daat Migration Tool
 
 
 # To do
-- enhance dedupe script to use a sql command to get the external ids of the objects already loaded and use these to dedupe against
-- refactor dedupe to function and repeat for all csvs
+refactor scripts to uses a apipe modle - each script should act on the output of the previous script.
+Scripts shoudl take an input parameter and return an output paramaeter (procossed file path)
 
-- create a log file 
-GetGEMSubProgramContractVariations is slow and has duplicates
-
+fix enrichLEHVSupplierList.ps1
