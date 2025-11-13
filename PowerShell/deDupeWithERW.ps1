@@ -18,7 +18,7 @@ Otherwise mark at as a duplciatecd
 #>
 
 param(
-    [string]$FileName = ".\Workspace\GEMStakeholderAcccounts.csv",
+    [string]$FileName = "..\Workspace\GEMStakeholderAcccounts.csv",
     [string]$GemIDField = "Stakeholder_ID",
     [string]$ERWTable = "DIM_CLA_CLIENT_ACCOUNT",
     [string]$ERWKeyField = "RECORD_ID"
@@ -28,7 +28,7 @@ param(
 $OutPath = ".\Processed\"
 $LogPath = ".\logs\dedupe.log"
 
-
+$pyScript = Resolve-Path -Path (Join-Path $PSScriptRoot '..\scripts\call_record_exists.py')
 # Create logs directory if it doesn't exist
 New-Item -ItemType Directory -Force -Path (Split-Path $LogPath) | Out-Null
 
@@ -65,6 +65,8 @@ function deDupe {
         [string]$ERWKeyField	
 		)
 
+        
+
         $csvDataNew = Import-Csv -Path  $FileName;
 
         foreach ($newRow in $csvDataNew) {
@@ -75,8 +77,11 @@ function deDupe {
                 # $foundRow = $csvDataOld |Where-Object { $_.$KeyField -eq $($newRow.$KeyField) }
                 $GemIDValue = $newRow.$GemIDField
 
+                
+
                  # Call python to query ERW and capture output
-                  $output = & python -c $py $ERWTable $ERWKeyField $GemIDValue 2>&1
+                #$output = & python -c $py $ERWTable $ERWKeyField $GemIDValue 2>&1
+                $output = & python $pyScript $ERWTable $ERWKeyField $GemIDValue 2>&1
 
                   if ($LASTEXITCODE -eq 0) {
                     $txt = $output.Trim()

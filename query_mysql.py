@@ -136,4 +136,4 @@ def record_exists(table: str, field: str, value: Any) -> bool:
     raise ValueError(f"More than one record found in {table} where {field}={value!r}")
 
 
-record_exists(field="RECORD_ID", table="DIM_CLA_CLIENT_ACCOUNT", value="123")
+#record_exists(field="RECORD_ID", table="DIM_CLA_CLIENT_ACCOUNT", value="123")
