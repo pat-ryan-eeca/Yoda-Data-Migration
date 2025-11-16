@@ -14,3 +14,7 @@ Input/Lists/LEHVF-Supplier_Details.csv
 Input/GetGEMSubProgramContractVariationsMilestones.csv
 logs/yoda.log
 scripts/Python/__pycache__/query_mysql.cpython-312.pyc
+Input/GEMSubProgramContracts.csv
+Input/GEMSubProgramContractVariations.csv
+Output/GEMSubProgramContracts.csv
+scripts/Python/__pycache__/query_mysql.cpython-312.pyc

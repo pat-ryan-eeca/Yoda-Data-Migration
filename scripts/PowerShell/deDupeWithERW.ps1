@@ -16,6 +16,7 @@ param(
     [string]$FileName = "GEMStakeholderAcccounts.csv",
     [string]$GemIDField = "Stakeholder_ID",
     [string]$ERWTable = "DIM_CLA_CLIENT_ACCOUNT",
+    #need to replace this with the actual name of the External_id field
     [string]$ERWKeyField = "RECORD_ID"
 )
 
@@ -30,7 +31,7 @@ $pyScript = Resolve-Path -Path (Join-Path $PSScriptRoot '..\Python\call_record_e
 # Create logs directory if it doesn't exist
 New-Item -ItemType Directory -Force -Path (Split-Path $LogPath) | Out-Null
 # Create output directory if it doesn't exist
-New-Item -ItemType Directory -Force -Path (Split-Path $InPath) | Out-Null
+New-Item -ItemType Directory -Force -Path (Split-Path $OutPath) | Out-Null
 
 # Helper function to write to console and log file
 function Write-Log {
@@ -53,8 +54,6 @@ function deDupe {
         [string]$ERWKeyField	
     )
 
-      rn
-        }
 
         $csvDataNew = Import-Csv -Path  $InputDir$FileName
         Write-Log "Opened CSV file: $FileName with $($csvDataNew.Count) rows" "Green"

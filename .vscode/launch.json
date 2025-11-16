@@ -1,6 +1,16 @@
 {
     "version": "0.2.0",
     "configurations": [
+         {
+            "name": "PowerShell: main",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "${workspaceFolder}\\scripts\\PowerShell\\main.ps1",
+            "cwd": "${workspaceFolder}",
+            "args": [
+                "-isLEHVF", "$false"
+            ]
+        },,
         {
             "name": "PowerShell: deDupeWithERW",
             "type": "PowerShell",
