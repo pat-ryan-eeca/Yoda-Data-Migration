@@ -1,6 +1,6 @@
 USE [GEM_UAT]
 GO
-/****** Object:  StoredProcedure [dbo].[GetGEMSubProgramContracts]    Script Date: 1/10/2025 11:42:09 AM ******/
+/****** Object:  StoredProcedure [dbo].[GetGEMSubProgramContracts]    Script Date: 11/17/2025 10:40:40 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -10,7 +10,7 @@ GO
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-CREATE OR ALTER PROCEDURE [dbo].[GetGEMSubProgramContracts]
+CREATE OR ALTER PROCEDURE [dbo].[GetGEMSubProgramProjects]
 	-- Add the parameters for the stored procedure here
 	@ProgramId INT,
 	@SubProgramId INT,
@@ -22,7 +22,7 @@ BEGIN
 	SET NOCOUNT ON;
 
   
-select @ProgramId,@SubProgramId,  p.Project_ID as Contract_ID, c.Stakeholder_id as applicant,  p.Project_Title as Contract_Title, p.External_Reference, 
+select @ProgramId,@SubProgramId,  p.Project_ID as Project_ID, c.Stakeholder_id as applicant,  p.Project_Title as Contract_Title, p.External_Reference, 
 		p.Project_Status_ID, p.Project_Actual_Start_Date, p.Project_Actual_Finish_Date,pd.value as EECA_CONTACT, t.Name as Round
 		from Contract c join Project p  on c.Project_ID=p.Project_ID
 		inner join STKH_Stakeholders s on c.Stakeholder_ID = s.stakeholder_id

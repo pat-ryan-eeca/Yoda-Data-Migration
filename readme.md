@@ -34,8 +34,4 @@ EXEC xp_cmdshell @cmd;
 Load the pre-processed CSVs to Enquire using the Enquire Data Migration Tool
 
 # To do
-refactor scripts to uses a a pipes&filters model - each script should act on the output of the previous script.
-Scripts should take an input parameter and return an output paramaeter (processed file path)
-rename GEMSubProgramContracts to GEMSubProgramProjects, Contract_ID to Project_ID, etc
-
 fix enrichLEHVSupplierList.ps1
