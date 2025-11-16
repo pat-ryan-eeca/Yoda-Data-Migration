@@ -16,19 +16,20 @@ SET @cmd= 'mkdir "' + @RootPath + '"';
 PRINT 'Creating output folder ' + @RootPath; 
 EXEC xp_cmdshell @cmd;
 `
-2. Run the script `UpdateYodaStoredProcedures.sql' in the .scripts\SQL\StoreedProc folder to create the stored procedure 
+2. Run the script `UpdateYodaStoredProcedures.sql' in the .scripts\SQL\StoredProc folder to create the stored procedure 
 
 ## Data Migration 
 ### Pre-processing
-1. checkout this project intop yout working directory
+1. checkout this project into your working directory
 1. Find  the master migration script in the .\scripts\SQL\Export folder  (e.g for LEHVF this is ExportAllLEHVF.sql)
 2. Run the script on the database server - it will create output csv files in a timestamped folder under the export directory 
-1. and copy the exported csv files from the database to the input folder of this project (makes sure it ios clean to start with)
-4. (LEHVF only)  Download the LEHVF Supplier List to the Workspace folder and run the script 'enrichLEHVSupplierList.ps1'
+1. Copy the exported csv files from the database to the Input folder of this project (makes sure it is clean to start with)
+4. (LEHVF only)  Download the LEHVF Supplier List to the .\Input\Lists  folder 
 3. Run the power shell script 'main.ps1' from the project root directory i.e
 
-`.\scripts\main.ps1`
-
+    `.\scripts\PowerShell\main.ps1`   
+         or for LEHVF  
+    `.\scripts\PowerShell\main.ps1 -isLEHVF $True`
 
 ### Migration
 Load the pre-processed CSVs to Enquire using the Enquire Data Migration Tool

@@ -11,7 +11,7 @@ param(
 )
 
 #constants
-$isLEHVF = $false
+$isLEHVF = $true
 $LogPath = ".\logs\yoda.log"
 
 function Write-Log {
@@ -26,7 +26,7 @@ Write-Log "============== Yoda data nmigration pre-rpcoessing started ==========
 ## process stakeholders
 Write-Log "processing stakeholders" "Cyan"
 $outfile = . .\scripts\PowerShell\concatBankAccount.ps1  -InputDir ".\Input\" -FileName "GEMStakeholderAcccounts.csv"
-$outfile = . .\\scripts\PowerShell\deDupeWithERW.ps1  -InputDir ".\Output\" -FileName $outfile
+$outfile = . .\scripts\PowerShell\deDupeWithERW.ps1  -InputDir ".\Output\" -FileName $outfile
 
 ## process projects
 Write-Log "processing contracts" "Cyan"
@@ -36,7 +36,7 @@ $outfile = . .\\scripts\PowerShell\deDupeWithERW.ps1  -InputDir ".\Input\" -File
 Write-Host "processed file is $outfile" 
 
 if ($isLEHVF) {
-     . .\enrichLEHVSupplierList.ps1
+     . .\scripts\PowerShell\enrichLEHVSupplierList.ps1
 }
 
 

@@ -1,9 +1,9 @@
-<# the  Current Supplier ID  in the sharepoint list for registered suppliers is used to match the stakleholder id from the 
-	GEMSubProgramContracts file. The stakeholder id is then appended to the sharepoint_list csv 
+<# the  Current Supplier ID  in the sharepoint list for registered suppliers is used to match the Refernce field in the
+	GEMSubProgramProjects file. The stakeholder id of the matched record is then appended to the sharepoint_list csv 
 #>
  
-	$supPath = ".\Lists\LEHVF-Supplier_Details.csv"
-	$supPathOut = ".\LEHVF-Supplier_Details_enriched.csv"
+	$supPath = ".\Input\Lists\LEHVF-Supplier_Details.csv"
+	$supPathOut = ".\Output\LEHVF-Supplier_Details_enriched.csv"
 	
 	$supData = Import-Csv -Path $supPath
 	$stakeholderColumnName = "stakeholderid"
@@ -25,13 +25,14 @@
 		
 	$supData = Import-Csv -Path $supPath
 	
-     $contractData = Import-Csv -Path ".\GEMSubProgramContracts.csv"
+     $contractData = Import-Csv -Path ".\Input\GEMSubProgramProjects.csv"
 
     foreach ($row in $supData) {
         # Access column values using dot notation
 		$supplierID = $row.'Current Supplier ID';
-        Write-Host "Supplier_ID: " +  $supplierID;
-		$searchString = '*'+  $supplierID + '*';
+        Write-Host "Supplier_ID: " $supplierID;
+		$searchString = "*"+$supplierID+"*";
+		Write-Host "searching for " $searchString;
       
         # Perform other operations with $row.ColumnName
 		 Write-Host " looking for  $($row.'Current Supplier ID')"
