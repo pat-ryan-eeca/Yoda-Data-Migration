@@ -23,7 +23,7 @@ param(
 #Constants
 #paths relative to project root
 
-$OutPath = ".\Output\"
+$outputDir = ".\Output\"
 
 $LogPath = ".\logs\yoda.log"
 
@@ -111,8 +111,8 @@ function deDupe {
         }
 
         # Save output to processed folder
-        New-Item -ItemType Directory -Force -Path $OutPath | Out-Null
-        $outFile = "$OutPath$([System.IO.Path]::GetFileName($FileName))"
+        $outFilePrefix = "_dedupe_"
+        $outFile = $outputDir+$outFilePrefix+$FileName
         $csvDataNew | Export-Csv $outFile -NoTypeInformation -Force
         Write-Log "Processed file saved to: $outFile" "Green"
 }
