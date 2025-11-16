@@ -41,7 +41,7 @@ $csvData = Import-Csv -Path $outputDir$OutFile
 
  
  Write-Log "saving changes to  $outputDir$outFile";
-	$csvData | Export-Csv $outFile -NoTypeInformation -Force
+	$csvData | Export-Csv  $outputDir$outFile -NoTypeInformation -Force
 return $outFile
 	
 	
