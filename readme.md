@@ -34,5 +34,8 @@ EXEC xp_cmdshell @cmd;
 ### Migration
 Load the pre-processed CSVs to Enquire using the Enquire Data Migration Tool
 
-# To do
-fix enrichLEHVSupplierList.ps1
+#To Do
+Consider Import-Csv -Path "C:\path\to\your\input.csv" | Sort-Object -Unique | Export-Csv -Path "C:\path\to\your\output.csv" -NoTypeInformation
+
+Sort-Object -Unique should remove rows whcuh are identical in all of their values
+
