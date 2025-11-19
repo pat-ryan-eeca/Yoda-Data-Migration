@@ -1,6 +1,6 @@
 USE [GEM_UAT]
 GO
-/****** Object:  StoredProcedure [dbo].[GetGEMSubProgramContractVariations]    Script Date: 11/17/2025 4:25:43 PM ******/
+/****** Object:  StoredProcedure [dbo].[GetGEMSubProgramContractVariations]    Script Date: 11/20/2025 10:48:30 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -10,10 +10,10 @@ GO
 -- Create date: 30/10/2025
 -- Description:	Returns contarct variations for a subprogram
 -- =============================================
-ALTER     PROCEDURE [dbo].[GetGEMSubProgramContractVariations]
+CREATE OR ALTER     PROCEDURE [dbo].[GetGEMSubProgramContractVariations]
 @ProgramId INT,
 @SubProgramId INT,
-@External_Reference VARCHAR(200)='',
+@Project_Code VARCHAR(200)='',
 @SkipFiles BIT = 1  -- if 1 (true) files are not exported
 
 AS
@@ -22,10 +22,11 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
-
+	
+with t1 as (
 
 select  
-	p.Project_ID,gwi.Workflow_Instance_ID, gwi.Parent_Workflow_Instance_ID, gwic.Workflow_Instance_ID as child,
+    gwi.Parent_Workflow_Instance_ID, gwic.Workflow_Instance_ID as child,
 	
 	LTRIM(RTRIM (p.project_id)) as project_id, 
 		LTRIM(RTRIM (c.Contract_ID)) as Contract_ID,  
@@ -57,19 +58,17 @@ select
 		
 		--project code is defined in a child workflow of the contract variation workflow
 		INNER join GrantWorkflowInstance gwic on gwic.Parent_Workflow_Instance_ID = gwi.Workflow_Instance_ID
-		
-		INNER JOIN  (
-			select GrantData.Value,GrantData.Workflow_Instance_ID, GrantData.Field_Definition_ID, ROW_NUMBER()
-			OVER (PARTITION BY Workflow_Instance_ID  ORDER BY (SELECT NULL)) AS RowNum
-			from GrantData
-			) gd
-		on 	gd.Workflow_Instance_ID = gwic.Workflow_Instance_ID    
-		and gd.Field_Definition_ID=1700 --project code  
-		and RowNum = 1 -- for some reason there are two child workflows with Field_Definition_ID=1700, we dedupe with RowNum()
+			
+
+	   LEFT JOIN dbo.GrantData gd on
+			gd.Workflow_Instance_ID = gwic.Workflow_Instance_ID                 
+			and gd.Field_Definition_ID=1700
+			and gd.Grant_ID = gwic.Grant_ID
 	  
 		LEFT JOIN dbo.CurrentGrantData cgd on
 			cgd.Workflow_Instance_ID = gwi.Workflow_Instance_ID                 
 			and cgd.Field_Definition_ID=1478
+			and cgd.Grant_ID = gwi.Grant_ID
 
 		LEFT JOIN  dbo.CurrentGrantData cgd2 on
 			cgd2.Grant_ID=cgd.Grant_ID              
@@ -146,6 +145,34 @@ select
 
 	  where  p.Program_ID = @ProgramId
 			and p.Subprogram_ID =@SubProgramId
-			and p.External_Reference like '%'+@External_Reference +'%'
+			--and p.External_Reference like '%'+@External_Reference +'%'
+			and CAST(gd.Value AS VARCHAR(MAX)) like  '%'+@Project_Code +'%'
+	)
+	
+
+	-- dedupe
+	select distinct 
+		project_id, 
+		Contract_ID,
+		Stakeholder_ID,
+		Workflow_Instance_ID, 
+		Title,
+		Type,
+		MilestoneIniatedOn,
+		ContractorSignatoryName,
+		status,
+		Request_Summary,
+		InternalReviewComment,
+		InternalReviewRecommendation,
+		Contract_Description,
+		Completion_Date,
+		ContractorSignatoryPosition,
+		ContractCap,
+		AuthorityToSign,
+		Project_Code
+
+	from t1
+	
+	
 		
 END
