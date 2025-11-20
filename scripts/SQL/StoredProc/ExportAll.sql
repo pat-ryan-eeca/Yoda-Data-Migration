@@ -1,6 +1,6 @@
 USE [GEM_UAT]
 GO
-/****** Object:  StoredProcedure [dbo].[ExportAll]    Script Date: 11/20/2025 10:50:46 AM ******/
+/****** Object:  StoredProcedure [dbo].[ExportAll]    Script Date: 11/20/2025 1:43:52 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -13,6 +13,7 @@ GO
 CREATE OR ALTER      PROCEDURE [dbo].[ExportAll] 
 	@ProgramId INT,
 	@SubProgramId INT,
+	@External_Reference VARCHAR(200)='',
 	@Project_Code VARCHAR(200)='',
 	@RootPath VARCHAR(255) = 'c:\temp\GEMEXPORT2\',
 	@SkipFiles BIT = 1  -- if 1 (true) files are not exported
@@ -49,7 +50,7 @@ EXEC xp_cmdshell  @cmd
 
 --GetGEMSubProgramProjects
 SET @header =  'PRINT(''Program_ID,Subprogram_ID,Project_ID, Applicant, Contract_Title, Reference, Status, Start_Date, End_Date, EECA_Contact, Round, project_Last_Updated_On, contract_Last_Updated_On'');' 
-SET @sql = 'EXEC GetGEMSubProgramProjects ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId)  +'"';
+SET @sql = 'EXEC GetGEMSubProgramProjects ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId)  +  +',' +   CONVERT(VARCHAR(100), @External_Reference) + ',''' +  CONVERT(VARCHAR(100), @Project_Code) +'''"';
 SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "'  + @header + @sql + ' -o ' + @RootPath + '\GEMSubProgramProjects.csv -s "," -h -1 -y ' + CONVERT(VARCHAR(10), @MaxFieldLength);
 select @cmd
 EXEC xp_cmdshell  @cmd
@@ -85,7 +86,7 @@ EXEC xp_cmdshell  @cmd
 
 --GetGEMSubProgramContractVariations		 
 SET @header =  'PRINT(''project_id, Contract_ID, Applicant, Workflow_Instance_ID, Title,  Type, RequestedOn, ContractorSignatoryName,status,Request_Summary,InternalReviewComment,InternalReviewRecommendation,ContractDescription, CompletionDate, CommencementDate, ContractorSignatoryPosition,ContractCap,AuthorityToSign,ProjectCode, File_ID, File_Name'');' 
-SET @sql = 'EXEC GetGEMSubProgramContractVariations ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) + +',' +   CONVERT(VARCHAR(10), @Project_Code) + '"';
+SET @sql = 'EXEC GetGEMSubProgramContractVariations ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) +',' +   CONVERT(VARCHAR(10), @Project_Code) + '"';
 SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "' + @header + @sql + ' -o ' + @RootPath + '\GEMSubProgramContractVariations.csv -s "," -h -1 -y ' + CONVERT(VARCHAR(10), @MaxFieldLength);
 select @cmd
 EXEC xp_cmdshell  @cmd
