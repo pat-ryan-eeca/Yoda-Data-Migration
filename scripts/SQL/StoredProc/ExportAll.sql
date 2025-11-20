@@ -1,6 +1,6 @@
 USE [GEM_UAT]
 GO
-/****** Object:  StoredProcedure [dbo].[ExportAll]    Script Date: 11/20/2025 1:43:52 PM ******/
+/****** Object:  StoredProcedure [dbo].[ExportAll]    Script Date: 11/20/2025 2:14:10 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -10,7 +10,7 @@ GO
 -- Create date: 30/10/2025
 -- Description:	Runs all the Yoda export scripts with the given parameters
 -- =============================================
-CREATE OR ALTER      PROCEDURE [dbo].[ExportAll] 
+ALTER      PROCEDURE [dbo].[ExportAll] 
 	@ProgramId INT,
 	@SubProgramId INT,
 	@External_Reference VARCHAR(200)='',
@@ -42,14 +42,14 @@ EXEC xp_cmdshell  @cmd
 
 
 --GetGEMStakeholderAcccounts
-SET @header =  'PRINT(''Program_ID,Subprogram_ID,Contract_ID, Project_ID, Stakeholder_ID, name, alt_name, phone_work, universal_resource_id, email_work, staff, gst_rate_code, gst_number, contact_name, crm_reference, entity_reg, registered_gst,Account_Name,Account_Number, account_suffix, bank_number,  branch_number, last_updated_on'') ;' 
-SET @sql = 'EXEC GetGEMStakeholderAcccounts ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) +'"';
-SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "' + @header + @sql + ' -o ' + @RootPath + '\GEMStakeholderAcccounts.csv -s "," -h -1 -y ' + CONVERT(VARCHAR(10), @MaxFieldLength);
+SET @header =  'PRINT(''Program_ID,Subprogram_ID,Contract_ID, Project_ID, Stakeholder_ID, name, alt_name, phone_work, universal_resource_id, email_work, staff, gst_rate_code, gst_number, contact_name, crm_reference, entity_reg, registered_gst,Account_Name,Account_Number, account_suffix, bank_number,  branch_number'') ;' 
+SET @sql = 'EXEC GetGEMStakeholderAccounts ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId)  +',' +   CONVERT(VARCHAR(100), @External_Reference) + ',''' +  CONVERT(VARCHAR(100), @Project_Code) +'''"';
+SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "' + @header + @sql + ' -o ' + @RootPath + '\GEMStakeholderAccounts.csv -s "," -h -1 -y ' + CONVERT(VARCHAR(10), @MaxFieldLength);
 select @cmd
 EXEC xp_cmdshell  @cmd
 
 --GetGEMSubProgramProjects
-SET @header =  'PRINT(''Program_ID,Subprogram_ID,Project_ID, Applicant, Contract_Title, Reference, Status, Start_Date, End_Date, EECA_Contact, Round, project_Last_Updated_On, contract_Last_Updated_On'');' 
+SET @header =  'PRINT(''Program_ID,Subprogram_ID,Project_ID, Applicant, Contract_Title, Reference, Status, Start_Date, End_Date, EECA_Contact, Round, Project_Code'');' 
 SET @sql = 'EXEC GetGEMSubProgramProjects ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId)  +  +',' +   CONVERT(VARCHAR(100), @External_Reference) + ',''' +  CONVERT(VARCHAR(100), @Project_Code) +'''"';
 SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "'  + @header + @sql + ' -o ' + @RootPath + '\GEMSubProgramProjects.csv -s "," -h -1 -y ' + CONVERT(VARCHAR(10), @MaxFieldLength);
 select @cmd

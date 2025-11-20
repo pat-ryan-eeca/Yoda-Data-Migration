@@ -1,6 +1,6 @@
 USE [GEM_UAT]
 GO
-/****** Object:  StoredProcedure [dbo].[GetGEMSubProgramProjects]    Script Date: 11/20/2025 1:48:06 PM ******/
+/****** Object:  StoredProcedure [dbo].[GetGEMSubProgramProjects]    Script Date: 11/20/2025 2:01:10 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -10,7 +10,7 @@ GO
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-ALTER   PROCEDURE [dbo].[GetGEMSubProgramProjects]
+CREATE OR ALTER   PROCEDURE [dbo].[GetGEMSubProgramProjects]
 	-- Add the parameters for the stored procedure here
 	@ProgramId INT,
 	@SubProgramId INT,
