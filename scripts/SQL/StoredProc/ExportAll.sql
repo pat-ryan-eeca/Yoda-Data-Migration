@@ -10,7 +10,7 @@ GO
 -- Create date: 30/10/2025
 -- Description:	Runs all the Yoda export scripts with the given parameters
 -- =============================================
-ALTER      PROCEDURE [dbo].[ExportAll] 
+CREATE OR ALTER      PROCEDURE [dbo].[ExportAll] 
 	@ProgramId INT,
 	@SubProgramId INT,
 	@External_Reference VARCHAR(200)='',
@@ -77,9 +77,10 @@ SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "'  + @header + @sql + ' -o ' + 
 select @cmd
 EXEC xp_cmdshell  @cmd
 
+
 --GetGEMSubProgramFiles
 SET @header =  'PRINT(''Program_ID, Subprogram_ID, Project_ID, Contract_ID, filename, document_title'');' 
-SET @sql = 'EXEC GetGEMSubProgramContractsFiles ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId) +'"';
+SET @sql = 'EXEC GetGEMSubProgramContractsFiles ' +  CONVERT(VARCHAR(10), @ProgramId) +',' +   CONVERT(VARCHAR(10), @SubProgramId)  +',' +   CONVERT(VARCHAR(100), @External_Reference) + ',''' +  CONVERT(VARCHAR(100), @Project_Code) +'''"';
 SET @cmd = 'sqlcmd -S EECAGEMUDB1 -d GEM_UAT -Q "'  + @header + @sql + ' -o ' + @RootPath + '\GetGEMSubProgramContractsFiles.csv -s "," -h -1 -y ' + CONVERT(VARCHAR(10), @MaxFieldLength);
 select @cmd
 EXEC xp_cmdshell  @cmd
